@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="WeatherNow premium weather dashboard concept with responsive layout, weather cards, forecasts, and air quality highlights."
+    />
+    <title>WeatherNow - Premium Weather Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <nav class="navbar container navbar-expand-lg align-items-center py-3">
+          <a class="navbar-brand d-flex align-items-center gap-2" href="#" aria-label="WeatherNow home">
+            <span class="brand-badge"><i class="bi bi-cloud-sun-fill"></i></span>
+            <span class="brand-name">WeatherNow</span>
+          </a>
+
+          <form class="navbar-search d-flex flex-grow-1 justify-content-center ms-lg-4" id="search-form">
+            <div class="search-shell">
+              <button class="search-icon" id="search-submit" type="submit" aria-label="Search weather">
+                <i class="bi bi-search"></i>
+              </button>
+              <input type="search" class="search-input" id="city-search" value="Hyderabad" aria-label="Search for city" />
+            </div>
+          </form>
+
+          <div class="nav-actions d-flex align-items-center gap-2 gap-md-3 ms-lg-3">
+            <button class="btn btn-light location-button" id="location-button" type="button">
+              <i class="bi bi-geo-alt-fill me-2"></i>
+              <span>Location</span>
+            </button>
+
+            <div class="unit-toggle" aria-label="Temperature unit toggle" role="group">
+              <button type="button" class="unit-btn active">°C</button>
+              <button type="button" class="unit-btn">°F</button>
+            </div>
+
+            <button class="btn theme-toggle" type="button" aria-label="Toggle dark mode">
+              <i class="bi bi-moon-fill"></i>
+            </button>
+          </div>
+        </nav>
+        <div class="container app-status" id="app-status" role="status" aria-live="polite" hidden></div>
+      </header>
+
+      <main class="container dashboard-main">
+        <section class="hero-card hero-sunny">
+          <div class="hero-content">
+            <div class="hero-head">
+              <div>
+                <p class="eyebrow">Current Weather</p>
+                <h1>Hyderabad, India</h1>
+                <div class="hero-meta">Monday, September 28 • 2:45 PM</div>
+              </div>
+              <button type="button" class="btn btn-light hero-chip">
+                <i class="bi bi-geo-alt-fill me-2"></i>Live
+              </button>
+            </div>
+
+            <div class="hero-body">
+              <div class="hero-icon" aria-label="Sunny weather">☀️</div>
+
+              <div class="temperature-block">
+                <div class="temp-value">29°C</div>
+                <div class="condition-text">Sunny</div>
+                <div class="feels-like">Feels like 31°C</div>
+                <div class="range-row">
+                  <span>H: 32°C</span>
+                  <span>L: 25°C</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <div class="section-heading row align-items-center mb-3">
+            <div class="col">
+              <h2>Weather Details</h2>
+            </div>
+          </div>
+
+          <div class="row g-3 detail-grid">
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-thermometer-half"></i></div>
+                <span class="label">Feels Like</span>
+                <strong>31°C</strong>
+                <small>Warm and bright</small>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-droplet"></i></div>
+                <span class="label">Humidity</span>
+                <strong>68%</strong>
+                <small>Comfortable</small>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-wind"></i></div>
+                <span class="label">Wind</span>
+                <strong>14 km/h</strong>
+                <small>NW direction</small>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-speedometer2"></i></div>
+                <span class="label">Pressure</span>
+                <strong>1012 hPa</strong>
+                <small>Normal</small>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-eye"></i></div>
+                <span class="label">Visibility</span>
+                <strong>10 km</strong>
+                <small>Clear view</small>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-cloud"></i></div>
+                <span class="label">Cloud Cover</span>
+                <strong>20%</strong>
+                <small>Mostly clear</small>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-sun"></i></div>
+                <span class="label">UV Index</span>
+                <strong>6</strong>
+                <small>Moderate</small>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+              <article class="info-card">
+                <div class="info-icon"><i class="bi bi-moisture"></i></div>
+                <span class="label">Dew Point</span>
+                <strong>22°C</strong>
+                <small>Dry air</small>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="hourly-section card-panel">
+          <div class="section-heading row align-items-center mb-3">
+            <div class="col">
+              <h2>Hourly Forecast</h2>
+            </div>
+          </div>
+
+          <div class="hourly-row">
+            <article class="hour-card active">
+              <span class="hour-label">Now</span>
+              <span class="hour-icon">☀️</span>
+              <strong>29°C</strong>
+              <small>10% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">11 AM</span>
+              <span class="hour-icon">☀️</span>
+              <strong>30°C</strong>
+              <small>8% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">12 PM</span>
+              <span class="hour-icon">🌤️</span>
+              <strong>31°C</strong>
+              <small>15% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">1 PM</span>
+              <span class="hour-icon">☀️</span>
+              <strong>32°C</strong>
+              <small>5% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">2 PM</span>
+              <span class="hour-icon">🌤️</span>
+              <strong>32°C</strong>
+              <small>20% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">3 PM</span>
+              <span class="hour-icon">🌧️</span>
+              <strong>30°C</strong>
+              <small>42% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">4 PM</span>
+              <span class="hour-icon">🌦️</span>
+              <strong>29°C</strong>
+              <small>38% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">5 PM</span>
+              <span class="hour-icon">🌧️</span>
+              <strong>28°C</strong>
+              <small>54% rain</small>
+            </article>
+
+            <article class="hour-card">
+              <span class="hour-label">6 PM</span>
+              <span class="hour-icon">🌤️</span>
+              <strong>27°C</strong>
+              <small>18% rain</small>
+            </article>
+          </div>
+        </section>
+
+        <div class="row g-4 lower-grid">
+          <div class="col-12 col-lg-8">
+            <section class="card-panel forecast-panel">
+              <div class="section-heading row align-items-center mb-3">
+                <div class="col">
+                  <h2>5-Day Forecast</h2>
+                </div>
+              </div>
+
+              <div class="forecast-list">
+                <div class="forecast-row">
+                  <div class="forecast-day">
+                    <span class="day-name">Today</span>
+                    <span class="day-date">Sep 28</span>
+                  </div>
+                  <div class="forecast-icon">☀️</div>
+                  <div class="forecast-cond">Sunny</div>
+                  <div class="forecast-temp">32° / 25°</div>
+                  <div class="forecast-rain">10% rain</div>
+                </div>
+
+                <div class="forecast-row">
+                  <div class="forecast-day">
+                    <span class="day-name">Tomorrow</span>
+                    <span class="day-date">Sep 29</span>
+                  </div>
+                  <div class="forecast-icon">🌤️</div>
+                  <div class="forecast-cond">Partly Cloudy</div>
+                  <div class="forecast-temp">31° / 24°</div>
+                  <div class="forecast-rain">18% rain</div>
+                </div>
+
+                <div class="forecast-row">
+                  <div class="forecast-day">
+                    <span class="day-name">Wednesday</span>
+                    <span class="day-date">Sep 30</span>
+                  </div>
+                  <div class="forecast-icon">🌧️</div>
+                  <div class="forecast-cond">Rain</div>
+                  <div class="forecast-temp">29° / 23°</div>
+                  <div class="forecast-rain">68% rain</div>
+                </div>
+
+                <div class="forecast-row">
+                  <div class="forecast-day">
+                    <span class="day-name">Thursday</span>
+                    <span class="day-date">Oct 1</span>
+                  </div>
+                  <div class="forecast-icon">⛈️</div>
+                  <div class="forecast-cond">Storms</div>
+                  <div class="forecast-temp">28° / 22°</div>
+                  <div class="forecast-rain">82% rain</div>
+                </div>
+
+                <div class="forecast-row">
+                  <div class="forecast-day">
+                    <span class="day-name">Friday</span>
+                    <span class="day-date">Oct 2</span>
+                  </div>
+                  <div class="forecast-icon">☀️</div>
+                  <div class="forecast-cond">Clear</div>
+                  <div class="forecast-temp">30° / 24°</div>
+                  <div class="forecast-rain">12% rain</div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-12 col-lg-4">
+            <section class="card-panel sun-panel">
+              <div class="section-heading row align-items-center mb-3">
+                <div class="col">
+                  <h2>Sunrise & Sunset</h2>
+                </div>
+              </div>
+
+              <div class="sun-progress-wrap">
+                <div class="sun-arc">
+                  <div class="sun-orb"><i class="bi bi-sun-fill"></i></div>
+                </div>
+
+                <div class="sun-info-row">
+                  <div class="sun-item">
+                    <span class="sun-icon"><i class="bi bi-sunrise-fill"></i></span>
+                    <div>
+                      <small>Sunrise</small>
+                      <strong>6:02 AM</strong>
+                    </div>
+                  </div>
+
+                  <div class="sun-item">
+                    <span class="sun-icon sunset"><i class="bi bi-sunset-fill"></i></span>
+                    <div>
+                      <small>Sunset</small>
+                      <strong>6:15 PM</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="day-length-box">
+                  <span>Day length</span>
+                  <strong>12h 13m</strong>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="row g-4 content-grid">
+          <div class="col-12 col-lg-5">
+            <section class="card-panel air-panel">
+              <div class="section-heading row align-items-center mb-3">
+                <div class="col">
+                  <h2>Air Quality</h2>
+                </div>
+              </div>
+
+              <div class="aqi-wrap">
+                <div class="aqi-top">
+                  <div>
+                    <span class="aqi-label">AQI</span>
+                    <strong>42</strong>
+                  </div>
+                  <span class="aqi-status">Good</span>
+                </div>
+
+                <div class="aqi-bar" aria-label="Air quality good">
+                  <span class="aqi-fill"></span>
+                </div>
+
+                <div class="aqi-metrics">
+                  <div class="metric-box">
+                    <span>PM2.5</span>
+                    <strong>12</strong>
+                  </div>
+                  <div class="metric-box">
+                    <span>PM10</span>
+                    <strong>20</strong>
+                  </div>
+                  <div class="metric-box">
+                    <span>O₃</span>
+                    <strong>35</strong>
+                  </div>
+                  <div class="metric-box">
+                    <span>NO₂</span>
+                    <strong>14</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <section class="card-panel map-panel">
+              <div class="section-heading row align-items-center mb-3">
+                <div class="col">
+                  <h2>Weather Map</h2>
+                </div>
+              </div>
+
+              <div class="map-visual">
+                <div class="map-badge">Hyderabad</div>
+                <div class="map-pin"><i class="bi bi-geo-alt-fill"></i></div>
+                <div class="map-tag tag-left">Rain Radar</div>
+                <div class="map-tag tag-right">Temperature</div>
+                <div class="map-tag tag-bottom">Wind</div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <section class="alert-card card-panel">
+          <div class="alert-header">
+            <span class="alert-icon"><i class="bi bi-exclamation-triangle-fill"></i></span>
+            <div>
+              <h3>Weather Alert</h3>
+              <small>4:00 PM - 8:00 PM</small>
+            </div>
+          </div>
+          <p>Heavy rainfall expected between 4 PM and 8 PM. Stay prepared for brief intense showers and reduced visibility.</p>
+        </section>
+
+        <section class="favorites-section">
+          <div class="section-heading row align-items-center mb-3">
+            <div class="col">
+              <h2>Favorite Locations</h2>
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-light" id="add-favorite">Add current city</button>
+            </div>
+          </div>
+
+          <div class="row g-3 favorite-grid">
+            <div class="col-6 col-md-3">
+              <article class="favorite-card">
+                <div class="fav-top">
+                  <span class="fav-star">⭐</span>
+                  <span>Hyderabad</span>
+                </div>
+                <div class="fav-temp">29°C <span>☀️</span></div>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-3">
+              <article class="favorite-card">
+                <div class="fav-top">
+                  <span class="fav-star">⭐</span>
+                  <span>Mumbai</span>
+                </div>
+                <div class="fav-temp">28°C <span>🌧️</span></div>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-3">
+              <article class="favorite-card">
+                <div class="fav-top">
+                  <span class="fav-star">⭐</span>
+                  <span>London</span>
+                </div>
+                <div class="fav-temp">17°C <span>☁️</span></div>
+              </article>
+            </div>
+
+            <div class="col-6 col-md-3">
+              <article class="favorite-card">
+                <div class="fav-top">
+                  <span class="fav-star">⭐</span>
+                  <span>Tokyo</span>
+                </div>
+                <div class="fav-temp">24°C <span>🌤️</span></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="empty-state-card card-panel">
+          <div class="empty-icon">☁️</div>
+          <h3>What's the weather?</h3>
+          <p>Search for a city to see the weather forecast.</p>
+          <button type="button" class="btn btn-primary empty-search-btn">Search City</button>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container footer-inner">
+          <div>
+            <div class="footer-brand">WeatherNow</div>
+            <p>Real-time weather information for locations around the world.</p>
+          </div>
+          <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">Forecast</a>
+            <a href="#">About</a>
+            <a href="#">Privacy</a>
+          </div>
+        </div>
+        <div class="container footer-bottom">© 2026 WeatherNow</div>
+      </footer>
+    </div>
+    <script src="js/app.js" defer></script>
+  </body>
+</html>
