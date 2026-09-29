@@ -1,4 +1,4 @@
-const API_KEY = "YOUR_API_KEY";
+const API_KEY = "4d6bd0e4c4acbc88b524e1e49761b06f";
 const API_ROOT = "https://api.openweathermap.org";
 const CACHE_DURATION = 5 * 60 * 1000;
 const STORAGE_KEYS = {
@@ -29,6 +29,7 @@ let requestSequence = 0;
 let mapInstance = null;
 let mapMarker = null;
 const weatherCache = new Map();
+const coordinateCache = new Map();
 
 class WeatherError extends Error {
   constructor(message, status) {
@@ -140,8 +141,11 @@ async function requestJSON(path, parameters) {
 }
 
 async function getCoordinates(city) {
+  const cacheKey = city.trim().toLowerCase();
+  if (coordinateCache.has(cacheKey)) return coordinateCache.get(cacheKey);
   const results = await requestJSON("/geo/1.0/direct", { q: city, limit: "1" });
   if (!results.length) throw new WeatherError("We couldn't find that city. Check the spelling and try again.", 404);
+  coordinateCache.set(cacheKey, results[0]);
   return results[0];
 }
 
@@ -172,7 +176,7 @@ async function getOneCall(latitude, longitude) {
   return requestJSON("/data/3.0/onecall", {
     lat: String(latitude),
     lon: String(longitude),
-    exclude: "minutely,hourly,daily",
+    exclude: "minutely,daily",
     units: "metric",
   });
 }
@@ -204,6 +208,7 @@ async function getWeatherData(location) {
 function updateWeatherIcon(container, condition, iconCode, imageClass = "") {
   const icon = getWeatherIcon(condition, iconCode);
   if (icon instanceof HTMLImageElement && imageClass) icon.className = imageClass;
+  container.setAttribute("aria-label", condition || "Weather condition unavailable");
   container.replaceChildren(icon);
 }
 
@@ -224,6 +229,7 @@ function renderCurrentWeather(data) {
   const timezoneOffset = current.timezone || 0;
   document.querySelector(".hero-head h1").textContent = `${cityName}, ${country}`;
   document.querySelector(".hero-meta").textContent = `${formatDay(Date.now() / 1000, timezoneOffset)}, ${formatDate(Date.now() / 1000, timezoneOffset)} · ${formatTime(Date.now() / 1000, timezoneOffset)}`;
+  document.querySelector(".hero-chip").lastChild.textContent = "Live";
   document.querySelector(".temp-value").textContent = formatTemperature(current.main.temp);
   document.querySelector(".condition-text").textContent = weather.main;
   document.querySelector(".feels-like").textContent = `${weather.description} · Feels like ${formatTemperature(current.main.feels_like)}`;
@@ -260,7 +266,8 @@ function renderWeatherDetails(data) {
   const dewPoint = oneCall?.current?.dew_point;
   setInfoCard("Feels Like", formatTemperature(current.main.feels_like), current.weather[0].description);
   setInfoCard("Humidity", `${current.main.humidity}%`, "Relative humidity");
-  setInfoCard("Wind", `${current.wind.speed} ${temperatureUnit === "imperial" ? "mph" : "m/s"}`, formatWindDirection(current.wind.deg));
+  const windSpeed = temperatureUnit === "imperial" ? current.wind.speed * 2.23694 : current.wind.speed;
+  setInfoCard("Wind", `${windSpeed.toFixed(1)} ${temperatureUnit === "imperial" ? "mph" : "m/s"}`, formatWindDirection(current.wind.deg));
   setInfoCard("Pressure", `${current.main.pressure} hPa`, "At sea level");
   setInfoCard("Visibility", visibility, "Current visibility");
   setInfoCard("Cloud Cover", `${current.clouds.all}%`, "Cloud coverage");
@@ -268,10 +275,10 @@ function renderWeatherDetails(data) {
   setInfoCard("Dew Point", dewPoint === undefined ? "--" : formatTemperature(dewPoint), dewPoint === undefined ? "Not available from this API plan" : "Current dew point");
 }
 
-function renderHourlyForecast(forecast) {
+function renderHourlyForecast(hourly, forecast) {
   const row = document.querySelector(".hourly-row");
-  const timezoneOffset = forecast.city.timezone || 0;
-  const items = forecast.list.slice(0, 9);
+  const timezoneOffset = hourly ? (currentWeatherData.current.timezone || 0) : (forecast.city.timezone || 0);
+  const items = hourly ? hourly.slice(0, 9) : forecast.list.slice(0, 9);
   row.replaceChildren(...items.map((item, index) => {
     const card = document.createElement("article");
     card.className = `hour-card${index === 0 ? " active" : ""}`;
@@ -392,7 +399,7 @@ function applyWeatherTheme(condition) {
 function renderWeather(data) {
   currentWeatherData = data;
   renderCurrentWeather(data);
-  renderHourlyForecast(data.forecast);
+  renderHourlyForecast(data.oneCall?.hourly, data.forecast);
   renderDailyForecast(data.forecast);
   loadFavorites();
   setStatus(`Weather updated for ${data.location.name || data.current.name}.`, "success");
@@ -593,6 +600,32 @@ function toggleFavoriteForCurrentCity() {
   if (city) saveFavorite(city);
 }
 
+function clearStaticWeather() {
+  document.querySelector(".hero-head h1").textContent = "Search a city";
+  document.querySelector(".hero-meta").textContent = "Live weather appears here";
+  document.querySelector(".hero-chip").lastChild.textContent = "Awaiting search";
+  document.querySelector(".temp-value").textContent = "--";
+  document.querySelector(".condition-text").textContent = "";
+  document.querySelector(".feels-like").textContent = "";
+  document.querySelector(".range-row").replaceChildren();
+  document.querySelector(".hero-icon").replaceChildren();
+  document.querySelector(".hero-icon").setAttribute("aria-label", "Weather condition unavailable");
+  document.querySelectorAll(".info-card strong").forEach((value) => { value.textContent = "--"; });
+  document.querySelectorAll(".info-card small").forEach((value) => { value.textContent = ""; });
+  document.querySelector(".hourly-row").replaceChildren();
+  document.querySelector(".forecast-list").replaceChildren();
+  document.querySelectorAll(".sun-info-row .sun-item strong").forEach((value) => { value.textContent = "--"; });
+  document.querySelector(".day-length-box strong").textContent = "--";
+  document.querySelector(".aqi-top strong").textContent = "--";
+  document.querySelector(".aqi-status").textContent = "Unavailable";
+  document.querySelector(".aqi-bar").setAttribute("aria-label", "Air quality unavailable");
+  document.querySelector(".aqi-fill").style.width = "0%";
+  document.querySelector(".aqi-metrics").replaceChildren();
+  document.querySelector(".map-badge").textContent = "Search for a location";
+  document.querySelector(".map-pin").hidden = true;
+  document.querySelectorAll(".map-tag").forEach((tag) => { tag.hidden = true; });
+}
+
 function loadLeaflet() {
   if (window.L) return Promise.resolve(window.L);
   if (window.leafletPromise) return window.leafletPromise;
@@ -621,6 +654,8 @@ async function updateMap(location, cityName) {
       elements.map.prepend(mapElement);
     }
     elements.map.classList.add("map-ready");
+    const badge = elements.map.querySelector(".map-badge");
+    if (badge) badge.textContent = `${cityName} · ${location.lat.toFixed(3)}, ${location.lon.toFixed(3)}`;
     if (!mapInstance) {
       mapInstance = leaflet.map("weather-map").setView([location.lat, location.lon], 10);
       leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -663,6 +698,7 @@ toggleTemperatureUnit(temperatureUnit === "imperial" ? "imperial" : "metric");
 toggleDarkMode(localStorage.getItem(STORAGE_KEYS.theme) === "dark");
 document.querySelector(".alert-card").hidden = true;
 elements.favoriteButton.disabled = true;
+clearStaticWeather();
 loadFavorites();
 loadRecentSearches();
 if (API_KEY === "YOUR_API_KEY") {

@@ -126,7 +126,33 @@ a {
   left: 18px;
   color: var(--muted);
   font-size: 1rem;
-  pointer-events: none;
+  pointer-events: auto;
+}
+
+#search-submit {
+  z-index: 1;
+  width: 28px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.app-status {
+  padding-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.app-status[data-kind="error"] {
+  color: #b42318;
+}
+
+.app-status[data-kind="success"] {
+  color: #087443;
 }
 
 .search-input {
@@ -215,6 +241,23 @@ a {
 
 .hero-sunny {
   background: linear-gradient(135deg, rgba(125, 211, 252, 0.34), rgba(58, 123, 255, 0.2));
+}
+
+.weather-clouds {
+  background: linear-gradient(135deg, rgba(173, 194, 213, 0.42), rgba(99, 131, 160, 0.2));
+}
+
+.weather-rain,
+.weather-drizzle,
+.weather-thunderstorm {
+  background: linear-gradient(135deg, rgba(91, 133, 173, 0.34), rgba(44, 76, 107, 0.22));
+}
+
+.weather-snow,
+.weather-mist,
+.weather-fog,
+.weather-haze {
+  background: linear-gradient(135deg, rgba(202, 216, 225, 0.46), rgba(139, 162, 177, 0.2));
 }
 
 .hero-card::before {
@@ -885,6 +928,129 @@ a {
   border-top: 1px solid rgba(138, 164, 191, 0.18);
   background: rgba(255,255,255,0.46);
   margin-top: 1.5rem;
+}
+
+.dark-mode {
+  background: var(--dark);
+  color: #e7eef8;
+}
+
+.dark-mode .topbar,
+.dark-mode .footer {
+  background: rgba(13, 27, 42, 0.94);
+  border-color: var(--dark-border);
+}
+
+.dark-mode .card-panel,
+.dark-mode .info-card,
+.dark-mode .favorite-card,
+.dark-mode .hero-card,
+.dark-mode .alert-card,
+.dark-mode .empty-state-card {
+  background-color: var(--dark-panel);
+  border-color: var(--dark-border);
+  color: #e7eef8;
+}
+
+.dark-mode .search-input,
+.dark-mode .location-button,
+.dark-mode .theme-toggle,
+.dark-mode .unit-toggle,
+.dark-mode .hour-card,
+.dark-mode .forecast-row,
+.dark-mode .sun-item,
+.dark-mode .metric-box {
+  background-color: var(--dark-card);
+  border-color: var(--dark-border);
+  color: #e7eef8;
+}
+
+.dark-mode .navbar-brand,
+.dark-mode .hero-head h1,
+.dark-mode .info-card strong,
+.dark-mode .forecast-temp,
+.dark-mode .sun-item strong,
+.dark-mode .day-length-box,
+.dark-mode .alert-card p,
+.dark-mode .footer-brand {
+  color: #e7eef8;
+}
+
+.dark-mode .hero-sunny,
+.dark-mode .weather-clouds,
+.dark-mode .weather-rain,
+.dark-mode .weather-drizzle,
+.dark-mode .weather-thunderstorm,
+.dark-mode .weather-snow,
+.dark-mode .weather-mist,
+.dark-mode .weather-fog,
+.dark-mode .weather-haze {
+  background: var(--dark-panel);
+}
+
+.recent-searches {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+}
+
+.recent-searches[hidden] {
+  display: none;
+}
+
+.recent-searches button {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.dark-mode .recent-searches button {
+  background: var(--dark-card);
+  border-color: var(--dark-border);
+  color: #e7eef8;
+}
+
+.favorite-card {
+  cursor: pointer;
+}
+
+.favorite-remove {
+  float: right;
+  margin-left: auto;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.weather-icon-image {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
+.hour-icon img,
+.forecast-icon img,
+.fav-temp img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+.map-visual.map-ready > :not(#weather-map):not(.map-badge) {
+  display: none;
+}
+
+#weather-map {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .footer-inner {
