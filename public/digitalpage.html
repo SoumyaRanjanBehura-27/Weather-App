@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxServices - Premium Digital Platform & Services Dashboard</title>
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style type="text/css">
+        :root {
+            --primary-accent: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            --dark-bg: #0f172a;
+            --glass-card-bg: rgba(255, 255, 255, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Navbar */
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Banner Section */
+        .hero-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #31103f 100%);
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 2.5rem;
+            border-bottom-right-radius: 2.5rem;
+            padding-top: 5rem;
+            padding-bottom: 6rem;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            right: -100px;
+            pointer-events: none;
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(217, 70, 239, 0.15) 0%, rgba(0,0,0,0) 70%);
+            bottom: -150px;
+            left: -50px;
+            pointer-events: none;
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Buttons */
+        .btn-gradient {
+            background: var(--primary-gradient);
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            opacity: 0.93;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Filter Pills */
+        .filter-chip {
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 50rem;
+            padding: 0.5rem 1.25rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-chip.active, .filter-chip:hover {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+
+        .hero-pill {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-pill:hover, .hero-pill.active {
+            background: #ffffff;
+            color: #0f172a;
+            border-color: #ffffff;
+        }
+
+        /* Interactive Service Cards */
+        .service-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.25rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--hover-shadow);
+            border-color: #c7d2fe;
+        }
+
+        .card-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Social Auth Buttons */
+        .btn-social {
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #334155;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-social:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1100;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3 px-3 px-lg-5">
+        <div class="container-fluid">
+            <!-- Brand Logo -->
+            <a class="navbar-brand fw-extrabold fs-4 d-flex align-items-center gap-2" href="#">
+                <span class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="fa-solid fa-layer-group"></i>
+                </span>
+                <span class="fw-bold text-dark tracking-tight">Lux<span class="gradient-text">Services</span></span>
+            </a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Menu & Actions -->
+            <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
+                <!-- Nav Links -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3 fw-medium">
+                    <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#solutions">Solutions</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#pricing">Pricing</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                    <!-- Navbar Search Bar -->
+                    <div class="input-group d-none d-xl-flex" style="width: 240px;">
+                        <span class="input-group-text bg-light border-end-0 rounded-start-pill text-muted pe-1">
+                            <i class="fa-solid fa-magnifying-glass fs-7"></i>
+                        </span>
+                        <input type="text" id="navSearchInput" class="form-control bg-light border-start-0 rounded-end-pill fs-7 shadow-none" placeholder="Quick search...">
+                    </div>
+
+                    <!-- Auth Button -->
+                    <button class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#authModal" id="authBtn">
+                        <i class="fa-regular fa-user"></i>
+                        <span id="authBtnText">Sign In / Register</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-banner text-white px-3 px-lg-5">
+        <div class="container py-4 position-relative" style="z-index: 2;">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col-lg-9 col-xl-8">
+                    <span class="badge bg-indigo bg-opacity-25 text-info border border-info border-opacity-25 rounded-pill px-3 py-2 mb-3 fw-medium">
+                        🚀 Next-Gen Digital Ecosystem 2026
+                    </span>
+                    <h1 class="display-4 fw-extrabold mb-3 tracking-tight lh-sm">
+                        Empower Your Digital Growth With <span class="gradient-text">Elite Solutions</span>
+                    </h1>
+                    <p class="lead text-slate-300 text-muted mb-4 fs-6 mx-auto" style="max-width: 680px;">
+                        Discover enterprise-grade API integrations, AI workflows, and cloud infrastructure services designed to scale your modern digital business seamlessly.
+                    </p>
+
+                    <!-- Main Search Input Bar -->
+                    <div class="bg-white p-2 rounded-pill shadow-lg d-flex align-items-center mb-4 max-w-lg mx-auto" style="max-width: 620px;">
+                        <span class="ps-3 text-muted fs-5"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" id="heroSearchInput" class="form-control border-0 shadow-none px-3 bg-transparent fs-6" placeholder="Search AI tools, APIs, cloud infrastructure...">
+                        <button class="btn btn-gradient rounded-pill px-4 py-2.5 fw-semibold" id="heroSearchBtn">
+                            Explore
+                        </button>
+                    </div>
+
+                    <!-- Hero Quick Filter Chips -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
+                        <span class="small text-white-50 me-2">Popular:</span>
+                        <button class="filter-chip hero-pill" data-quick="AI & ML">AI & ML</button>
+                        <button class="filter-chip hero-pill" data-quick="Cloud Solutions">Cloud</button>
+                        <button class="filter-chip hero-pill" data-quick="API & DevOps">APIs</button>
+                        <button class="filter-chip hero-pill" data-quick="Cybersecurity">Security</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="container py-5">
+        <!-- Controls Header -->
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+                <h2 class="fw-extrabold h3 mb-1 text-dark">Platform Services & Tools</h2>
+                <p class="text-muted small mb-0">Browse and deploy curated digital solutions tailored to your operational needs</p>
+            </div>
+
+            <!-- Sorting & Total Counter -->
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-muted small fw-medium" id="itemCountDisplay">Showing 0 services</span>
+                <select id="sortSelect" class="form-select rounded-pill border-slate-300 shadow-none text-muted fs-7 py-2 pe-4" style="width: 180px;">
+                    <option value="popular">Most Popular</option>
+                    <option value="rating">Highest Rated</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Filter Chips Container -->
+        <div class="d-flex flex-wrap gap-2 mb-4" id="categoryFilterContainer">
+            <button class="filter-chip active" data-category="all">All Services</button>
+            <button class="filter-chip" data-category="AI & ML">AI & Machine Learning</button>
+            <button class="filter-chip" data-category="Cloud Solutions">Cloud Infrastructure</button>
+            <button class="filter-chip" data-category="API & DevOps">DevOps & APIs</button>
+            <button class="filter-chip" data-category="Cybersecurity">Cybersecurity</button>
+            <button class="filter-chip" data-category="Analytics">Data Analytics</button>
+        </div>
+
+        <div class="row g-4" id="servicesGrid">
+            <!-- Dynamic JavaScript Content Injected Here -->
+        </div>
+
+        <!-- Empty Results State -->
+        <div id="noResultsState" class="text-center py-5 d-none">
+            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center p-4 mb-3">
+                <i class="fa-solid fa-magnifying-glass fa-2x text-muted"></i>
+            </div>
+            <h4 class="fw-bold text-dark">No matching services found</h4>
+            <p class="text-muted fs-7">Try adjusting your search terms or choosing a different category filter.</p>
+            <button class="btn btn-outline-dark rounded-pill px-4 mt-2" id="resetFiltersBtn">Reset Filters</button>
+        </div>
+    </section>
+
+    <div class="modal fade" id="serviceDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header bg-dark text-white p-4 border-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div id="modalIconContainer" class="card-icon-wrapper mb-0 bg-white text-dark"></div>
+                        <div>
+                            <span id="modalCategoryBadge" class="badge bg-indigo text-white mb-1"></span>
+                            <h5 class="modal-title fw-bold text-white mb-0" id="modalTitle">Service Title</h5>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-7">
+                            <h6 class="fw-bold text-dark mb-2">Overview</h6>
+                            <p id="modalDescription" class="text-muted small mb-4"></p>
+                            
+                            <h6 class="fw-bold text-dark mb-2">Key Features & Capabilities</h6>
+                            <ul id="modalFeatureList" class="list-unstyled text-muted small d-flex flex-column gap-2">
+                                <!-- Dynamic List -->
+                            </ul>
+                        </div>
+                        <div class="col-md-5 bg-light p-4 rounded-3 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="fw-bold text-dark mb-3">Deployment Tier</h6>
+                                <div class="d-flex align-items-baseline mb-2">
+                                    <span id="modalPrice" class="display-6 fw-extrabold text-indigo me-1"></span>
+                                    <span class="text-muted small" id="modalBillingCycle">/ month</span>
+                                </div>
+                                <div class="text-warning small mb-3" id="modalRating"></div>
+                                <div class="p-3 bg-white rounded-3 border mb-3">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>SLA Guarantee:</span>
+                                        <strong class="text-dark">99.99%</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between small text-muted">
+                                        <span>Setup Time:</span>
+                                        <strong class="text-dark">Instant Deploy</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-gradient w-100 py-2.5 rounded-pill fw-semibold" id="deployServiceBtn">
+                                Deploy Service Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header bg-dark text-white p-4 pb-3 border-0">
+                    <div>
+                        <h5 class="modal-title fw-extrabold" id="authModalTitle">Access LuxPlatform</h5>
+                        <p class="text-muted small mb-0">Manage your enterprise services and API credentials</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <!-- Nav Tabs -->
+                    <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-pill" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active rounded-pill fw-semibold py-2 fs-7" id="login-tab" data-bs-toggle="pill" data-bs-target="#loginPane" type="button">Sign In</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill fw-semibold py-2 fs-7" id="signup-tab" data-bs-toggle="pill" data-bs-target="#signupPane" type="button">Create Account</button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-content">
+                        <!-- Sign In Tab -->
+                        <div class="tab-pane fade show active" id="loginPane" role="tabpanel">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Work Email</label>
+                                    <input type="email" class="form-control rounded-3 py-2 fs-7" id="loginEmail" placeholder="alex@company.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label class="form-label small fw-medium text-dark mb-0">Password</label>
+                                        <a href="#" class="small text-decoration-none text-indigo">Forgot?</a>
+                                    </div>
+                                    <input type="password" class="form-control rounded-3 py-2 fs-7" id="loginPassword" placeholder="••••••••" required>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                                    <label class="form-check-label text-muted small" for="rememberMe">Remember login details</label>
+                                </div>
+                                <button type="submit" class="btn btn-gradient w-100 py-2.5 rounded-pill fw-semibold mb-3">
+                                    Sign In to Dashboard
+                                </button>
+                            </form>
+
+                            <div class="position-relative text-center my-3">
+                                <hr class="border-secondary opacity-25">
+                                <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 small text-muted">OR CONTINUE WITH</span>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small"><i class="fa-brands fa-google text-danger me-1"></i> Google</button>
+                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small"><i class="fa-brands fa-github text-dark me-1"></i> GitHub</button>
+                            </div>
+                        </div>
+
+                        <!-- Create Account Tab -->
+                        <div class="tab-pane fade" id="signupPane" role="tabpanel">
+                            <form id="signupForm">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Full Name</label>
+                                    <input type="text" class="form-control rounded-3 py-2 fs-7" id="signupName" placeholder="Alex Morgan" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Work Email</label>
+                                    <input type="email" class="form-control rounded-3 py-2 fs-7" id="signupEmail" placeholder="alex@company.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Password</label>
+                                    <input type="password" class="form-control rounded-3 py-2 fs-7" id="signupPassword" placeholder="Minimum 8 characters" minlength="8" required>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" id="acceptTerms" required>
+                                    <label class="form-check-label text-muted small" for="acceptTerms">I accept the Terms & Privacy Policy</label>
+                                </div>
+                                <button type="submit" class="btn btn-gradient w-100 py-2.5 rounded-pill fw-semibold">
+                                    Register Account
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="pricing" class="bg-dark text-white pt-5 pb-4 mt-5">
+        <div class="container">
+            <div class="row g-4 mb-5">
+                <!-- Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="bg-white text-dark rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <span class="fs-5 fw-extrabold text-white">LuxServices</span>
+                    </div>
+                    <p class="text-muted small mb-4" style="max-width: 320px;">
+                        Architecting high-performance API platforms, automated AI workflows, and enterprise cloud solutions for visionary teams worldwide.
+                    </p>
+                    <div class="d-flex gap-3 fs-5">
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-discord"></i></a>
+                    </div>
+                </div>
+
+                <!-- Column 1: Services -->
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Services</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a href="#" class="text-decoration-none text-muted">AI & Neural Models</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Cloud Compute</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">DevOps Pipelines</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Zero-Trust Security</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 2: Solutions -->
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Solutions</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a href="#" class="text-decoration-none text-muted">Enterprise Scaling</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">SaaS Architecture</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">API Gateway</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Data Intelligence</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Newsletter -->
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Stay Updated</h6>
+                    <p class="small text-muted mb-3">Subscribe to receive developer updates, platform news, and release notes.</p>
+                    <form id="newsletterForm" class="input-group">
+                        <input type="email" id="newsletterEmail" class="form-control rounded-start-pill bg-dark text-white border-secondary shadow-none fs-7" placeholder="developer@company.com" required>
+                        <button class="btn btn-gradient rounded-end-pill px-4 fs-7" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <hr class="border-secondary opacity-25">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start small text-muted">
+                    &copy; 2026 LuxServices Inc. All rights reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-end small text-muted mt-2 mt-md-0">
+                    <a href="#" class="text-decoration-none text-muted me-3">Privacy Policy</a>
+                    <a href="#" class="text-decoration-none text-muted me-3">Terms of Service</a>
+                    <a href="#" class="text-decoration-none text-muted">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript">
+        // Service Platform Data Source
+        const servicesData = [
+            {
+                id: 1,
+                title: "Neural Vision AI Engine",
+                category: "AI & ML",
+                icon: "fa-brain",
+                bgColor: "#e0e7ff",
+                iconColor: "#4f46e5",
+                price: 199,
+                rating: 4.9,
+                reviews: 142,
+                badge: "Popular",
+                description: "High-throughput computer vision API for realtime object detection, image classification, and automated video analytical processing.",
+                features: ["Latency < 45ms", "Multi-model orchestration", "Automated edge deployment"]
+            },
+            {
+                id: 2,
+                title: "Serverless Edge Cloud",
+                category: "Cloud Solutions",
+                icon: "fa-cloud-bolt",
+                bgColor: "#dbeafe",
+                iconColor: "#2563eb",
+                price: 89,
+                rating: 4.8,
+                reviews: 98,
+                badge: "Hot",
+                description: "Ultra-low latency global serverless compute nodes optimized for dynamic microservices and instant traffic scaling.",
+                features: ["300+ Edge locations", "Automatic auto-scaling", "DDoS mitigation built-in"]
+            },
+            {
+                id: 3,
+                title: "API Gateway Enterprise",
+                category: "API & DevOps",
+                icon: "fa-network-wired",
+                bgColor: "#fce7f3",
+                iconColor: "#db2777",
+                price: 149,
+                rating: 4.7,
+                reviews: 76,
+                badge: "Essential",
+                description: "Unified API management platform with rate limiting, OAuth authentication, and interactive developer portal dashboards.",
+                features: ["GraphQL & REST support", "Realtime telemetry", "Zero-downtime routing"]
+            },
+            {
+                id: 4,
+                title: "Zero-Trust Guard Shield",
+                category: "Cybersecurity",
+                icon: "fa-shield-halved",
+                bgColor: "#dcfce7",
+                iconColor: "#16a34a",
+                price: 299,
+                rating: 5.0,
+                reviews: 210,
+                badge: "Top Rated",
+                description: "Comprehensive end-to-end security suite featuring automated vulnerability scanning, identity governance, and threat detection.",
+                features: ["SOC2 compliant", "Automated threat response", "Realtime identity access management"]
+            },
+            {
+                id: 5,
+                title: "Realtime Data Intelligence",
+                category: "Analytics",
+                icon: "fa-chart-pie",
+                bgColor: "#fef3c7",
+                iconColor: "#d97706",
+                price: 129,
+                rating: 4.6,
+                reviews: 84,
+                badge: "",
+                description: "Streaming telemetry pipeline capable of processing billions of events daily with built-in predictive SQL dashboards.",
+                features: ["Kafka connector integration", "Custom BI widgets", "Automated alert triggers"]
+            },
+            {
+                id: 6,
+                title: "LLM Orchestrator Pro",
+                category: "AI & ML",
+                icon: "fa-robot",
+                bgColor: "#fae8ff",
+                iconColor: "#c026d3",
+                price: 249,
+                rating: 4.9,
+                reviews: 189,
+                badge: "New 2026",
+                description: "Seamlessly route prompts, manage token caching, and orchestrate open-source and proprietary large language models.",
+                features: ["Prompt caching optimization", "Fallback model routing", "Enterprise compliance controls"]
+            },
+            {
+                id: 7,
+                title: "Kubernetes Ops Pipeline",
+                category: "API & DevOps",
+                icon: "fa-cubes",
+                bgColor: "#ccfbf1",
+                iconColor: "#0d9488",
+                price: 179,
+                rating: 4.8,
+                reviews: 115,
+                badge: "",
+                description: "Automated CI/CD GitOps workflow tool designed to build, test, and deploy microservices to Kubernetes clusters safely.",
+                features: ["GitOps native synchronization", "Canary deployment support", "Role-based access controls"]
+            },
+            {
+                id: 8,
+                title: "Multi-Cloud Storage Vault",
+                category: "Cloud Solutions",
+                icon: "fa-database",
+                bgColor: "#e0f2fe",
+                iconColor: "#0284c7",
+                price: 69,
+                rating: 4.7,
+                reviews: 63,
+                badge: "Best Value",
+                description: "Encrypted distributed object storage platform providing cross-region redundancy and instant data restoration capability.",
+                features: ["AES-256 Encryption", "Immutable backup vaults", "S3 API compatibility"]
+            }
+        ];
+
+        // App State
+        let currentCategory = 'all';
+        let searchQuery = '';
+        let currentSort = 'popular';
+
+        // DOM Elements
+        const servicesGrid = document.getElementById('servicesGrid');
+        const noResultsState = document.getElementById('noResultsState');
+        const itemCountDisplay = document.getElementById('itemCountDisplay');
+        const categoryFilterContainer = document.getElementById('categoryFilterContainer');
+        const heroSearchInput = document.getElementById('heroSearchInput');
+        const heroSearchBtn = document.getElementById('heroSearchBtn');
+        const navSearchInput = document.getElementById('navSearchInput');
+        const sortSelect = document.getElementById('sortSelect');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        const authBtnText = document.getElementById('authBtnText');
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderServices();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Category Filter Click
+            categoryFilterContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-chip')) {
+                    document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentCategory = e.target.getAttribute('data-category');
+                    renderServices();
+                }
+            });
+
+            // Quick Hero Pill Click
+            document.querySelectorAll('.hero-pill').forEach(pill => {
+                pill.addEventListener('click', (e) => {
+                    const cat = e.target.getAttribute('data-quick');
+                    currentCategory = cat;
+                    // Update active state in category bar
+                    document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => {
+                        btn.classList.toggle('active', btn.getAttribute('data-category') === cat);
+                    });
+                    renderServices();
+                    document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Search Inputs
+            heroSearchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                renderServices();
+            });
+
+            heroSearchBtn.addEventListener('click', () => {
+                searchQuery = heroSearchInput.value.toLowerCase().trim();
+                renderServices();
+                document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            navSearchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                renderServices();
+            });
+
+            // Sorting Select
+            sortSelect.addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                renderServices();
+            });
+
+            // Reset Filters
+            resetFiltersBtn.addEventListener('click', () => {
+                currentCategory = 'all';
+                searchQuery = '';
+                currentSort = 'popular';
+                heroSearchInput.value = '';
+                navSearchInput.value = '';
+                sortSelect.value = 'popular';
+                
+                document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-category') === 'all');
+                });
+                renderServices();
+            });
+
+            // Login Form Submit
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const name = email.split('@')[0];
+                authBtnText.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+                modal.hide();
+                showNotification(`Successfully logged in as ${email}`);
+            });
+
+            // Signup Form Submit
+            document.getElementById('signupForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value;
+                authBtnText.textContent = name.split(' ')[0];
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+                modal.hide();
+                showNotification(`Welcome to LuxServices, ${name}!`);
+            });
+
+            // Newsletter Submit
+            document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showNotification('Thank you for subscribing to developer updates!');
+                document.getElementById('newsletterEmail').value = '';
+            });
+        }
+
+        function renderServices() {
+            // Filter
+            let filtered = servicesData.filter(item => {
+                const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery) || 
+                                      item.description.toLowerCase().includes(searchQuery) ||
+                                      item.category.toLowerCase().includes(searchQuery);
+                return matchesCategory && matchesSearch;
+            });
+
+            // Sort
+            if (currentSort === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (currentSort === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else {
+                // Popularity / Default ID
+                filtered.sort((a, b) => b.reviews - a.reviews);
+            }
+
+            // Update Count Display
+            itemCountDisplay.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? 'service' : 'services'}`;
+
+            // Render
+            servicesGrid.innerHTML = '';
+            if (filtered.length === 0) {
+                noResultsState.classList.remove('d-none');
+                return;
+            }
+            noResultsState.classList.add('d-none');
+
+            filtered.forEach(service => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4 col-xl-3';
+                col.innerHTML = `
+                    <div class="service-card p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="card-icon-wrapper mb-0" style="background-color: ${service.bgColor}; color: ${service.iconColor};">
+                                <i class="fa-solid ${service.icon}"></i>
+                            </div>
+                            ${service.badge ? `<span class="badge bg-dark rounded-pill px-3 py-1.5 font-semibold fs-8">${service.badge}</span>` : ''}
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="text-uppercase fw-bold text-muted" style="font-size: 0.68rem; letter-spacing: 0.05em;">${service.category}</span>
+                            <h5 class="fw-bold text-dark h6 my-1 text-truncate" title="${service.title}">${service.title}</h5>
+                            <p class="text-muted small line-clamp-2 mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px;">
+                                ${service.description}
+                            </p>
+                        </div>
+
+                        <div class="pt-3 border-top mt-auto d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-warning small" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-star"></i> <strong class="text-dark">${service.rating}</strong> <span class="text-muted">(${service.reviews})</span>
+                                </div>
+                                <span class="fw-extrabold text-dark fs-5">$${service.price}</span><span class="text-muted small">/mo</span>
+                            </div>
+                            <button class="btn btn-outline-dark rounded-pill btn-sm px-3 fw-semibold" onclick="openServiceDetail(${service.id})">
+                                Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+                servicesGrid.appendChild(col);
+            });
+        }
+
+        function openServiceDetail(id) {
+            const service = servicesData.find(s => s.id === id);
+            if (!service) return;
+
+            document.getElementById('modalIconContainer').style.backgroundColor = service.bgColor;
+            document.getElementById('modalIconContainer').style.color = service.iconColor;
+            document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${service.icon}"></i>`;
+            document.getElementById('modalCategoryBadge').textContent = service.category;
+            document.getElementById('modalTitle').textContent = service.title;
+            document.getElementById('modalDescription').textContent = service.description;
+            document.getElementById('modalPrice').textContent = `$${service.price}`;
+            document.getElementById('modalRating').innerHTML = `<i class="fa-solid fa-star"></i> ${service.rating} score rating (${service.reviews} enterprise clients)`;
+
+            const featureList = document.getElementById('modalFeatureList');
+            featureList.innerHTML = service.features.map(f => `
+                <li class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-success"></i> ${f}
+                </li>
+            `).join('');
+
+            const deployBtn = document.getElementById('deployServiceBtn');
+            deployBtn.onclick = () => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('serviceDetailModal'));
+                modal.hide();
+                showNotification(`Successfully initialized deployment for ${service.title}!`);
+            };
+
+            const modal = new bootstrap.Modal(document.getElementById('serviceDetailModal'));
+            modal.show();
+        }
+
+        function showNotification(message) {
+            let container = document.getElementById('toastContainer');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toastContainer';
+                container.className = 'toast-container p-3';
+                document.body.appendChild(container);
+            }
+
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast align-items-center text-white bg-dark border-0 shadow-lg rounded-3';
+            toastEl.role = 'alert';
+            toastEl.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-success fs-5"></i> ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto shadow-none" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            container.appendChild(toastEl);
+            const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+            toast.show();
+
+            toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
+        }
+    </script>
+</body>
+</html>
