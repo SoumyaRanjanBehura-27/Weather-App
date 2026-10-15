@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Responsive Webpage</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style type="text/css">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333333;
+        }
+
+        /* Navbar Customization */
+        .navbar {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Hero Banner Section */
+        .hero-section {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: #f8f9fa;
+            clip-path: polygon(0 100%, 100% 100%, 100% 0);
+        }
+
+        /* Cards Hover & Transition Effects */
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 12px;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #212529;
+            color: #adb5bd;
+        }
+
+        footer a {
+            color: #adb5bd;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Sticky Navigation Bar -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+            <div class="container">
+                <a class="navbar-brand text-primary d-flex align-items-center gap-2" href="#">
+                    <i class="fa-solid fa-cube fa-lg"></i> BrandPulse
+                </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav align-items-lg-center gap-lg-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active fw-medium" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-medium" href="#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-medium" href="#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-medium" href="#contact">Contact</a>
+                        </li>
+                        <li class="nav-item mt-2 mt-lg-0">
+                            <button class="btn btn-primary px-4 rounded-pill shadow-sm" onclick="showWelcomeMessage()">Get Started</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Body -->
+    <main id="home">
+        <!-- Hero Banner Section -->
+        <section class="hero-section text-center text-lg-start">
+            <div class="container py-5">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-7">
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill fw-semibold mb-3 shadow-sm">
+                            <i class="fa-solid fa-bolt me-1"></i> Welcome to the Future
+                        </span>
+                        <h1 class="display-4 fw-bold mb-3 lh-tight">Build Better Experiences with Modern Design</h1>
+                        <p class="lead mb-4 text-white-50">A clean, fully responsive template built using HTML5, CSS3, JavaScript, and Bootstrap 5. Fast, lightweight, and completely customizable.</p>
+                        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                            <a href="#features" class="btn btn-light btn-lg text-primary fw-semibold px-4 rounded-pill shadow">Explore Features</a>
+                            <button class="btn btn-outline-light btn-lg px-4 rounded-pill" onclick="triggerAlertModal()">Learn More</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 text-center">
+                        <img src="https://placehold.co/500x400/0a58ca/ffffff?text=Modern+Dashboard" class="img-fluid rounded-4 shadow-lg border border-light border-opacity-25" alt="Hero Banner Illustration">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature / Content Body Section -->
+        <section id="features" class="py-5 my-5">
+            <div class="container py-4">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold display-6">Powerful Features</h2>
+                    <p class="text-muted">Designed to deliver exceptional performance across all devices.</p>
+                </div>
+                <div class="row g-4">
+                    <!-- Feature Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card feature-card h-100 p-4 shadow-sm bg-white">
+                            <div class="card-body">
+                                <div class="icon-box text-primary bg-primary bg-opacity-10 d-inline-flex p-3 rounded-3 mb-3">
+                                    <i class="fa-solid fa-mobile-screen-button fa-2x"></i>
+                                </div>
+                                <h3 class="h5 fw-bold mb-3">Fully Responsive</h3>
+                                <p class="text-muted mb-0">Adapts seamlessly to mobile phones, tablets, laptops, and desktop screens of all dimensions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature Card 2 -->
+                    <div class="col-md-4">
+                        <div class="card feature-card h-100 p-4 shadow-sm bg-white">
+                            <div class="card-body">
+                                <div class="icon-box text-success bg-success bg-opacity-10 d-inline-flex p-3 rounded-3 mb-3">
+                                    <i class="fa-solid fa-gauge-high fa-2x"></i>
+                                </div>
+                                <h3 class="h5 fw-bold mb-3">Lightning Fast</h3>
+                                <p class="text-muted mb-0">Optimized codebase with clean structure ensures ultra-fast page loading speeds and fluid transitions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature Card 3 -->
+                    <div class="col-md-4">
+                        <div class="card feature-card h-100 p-4 shadow-sm bg-white">
+                            <div class="card-body">
+                                <div class="icon-box text-warning bg-warning bg-opacity-10 d-inline-flex p-3 rounded-3 mb-3">
+                                    <i class="fa-solid fa-shield-halved fa-2x"></i>
+                                </div>
+                                <h3 class="h5 fw-bold mb-3">Secure & Reliable</h3>
+                                <p class="text-muted mb-0">Built following modern web best practices, ensuring solid reliability and cross-browser compatibility.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About / Call to Action Section -->
+        <section id="about" class="bg-white py-5 border-top border-bottom">
+            <div class="container py-4">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6">
+                        <img src="https://placehold.co/600x400/e9ecef/495057?text=Team+Collaboration" class="img-fluid rounded-4 shadow-sm" alt="About Section">
+                    </div>
+                    <div class="col-lg-6">
+                        <h2 class="fw-bold display-6 mb-3">Built with passion for modern developers</h2>
+                        <p class="text-muted mb-4">Whether you are building a landing page, portfolio, or a web app MVP, this structure provides a clean slate with pre-configured Bootstrap utilities and responsive layouts.</p>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2 d-flex align-items-center gap-2 text-secondary"><i class="fa-solid fa-check text-primary"></i> Easy customization with CSS variables</li>
+                            <li class="mb-2 d-flex align-items-center gap-2 text-secondary"><i class="fa-solid fa-check text-primary"></i> Pre-styled Bootstrap 5 components</li>
+                            <li class="mb-2 d-flex align-items-center gap-2 text-secondary"><i class="fa-solid fa-check text-primary"></i> Interactive JavaScript helper methods</li>
+                        </ul>
+                        <button class="btn btn-outline-primary px-4 rounded-pill" onclick="showWelcomeMessage()">Explore Documentation</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sleek Footer -->
+    <footer id="contact" class="pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-cube text-primary"></i> BrandPulse
+                    </h5>
+                    <p class="text-muted small">Creating clean, modern, and highly responsive web templates for businesses and modern creators worldwide.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="text-white fw-semibold mb-3">Navigation</h6>
+                    <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="text-white fw-semibold mb-3">Resources</h6>
+                    <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="text-white fw-semibold mb-3">Stay Updated</h6>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Recipient's username" id="newsletterInput">
+                        <button class="btn btn-primary" type="button" onclick="subscribeNewsletter()">Subscribe</button>
+                    </div>
+                    <div id="newsletterMsg" class="small text-success mt-1"></div>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small text-muted mb-0">&copy; 2026 BrandPulse. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <div class="d-inline-flex gap-3">
+                        <a href="#" class="text-muted"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="text-muted"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="text-muted"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="text-muted"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal Message Box (Instead of alert()) -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Notification</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4" id="modalMessage">
+                    Welcome to the page!
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script type="text/javascript">
+        // Function to show welcome message using custom modal instead of alert()
+        function showWelcomeMessage() {
+            document.getElementById('modalTitle').innerText = "Get Started";
+            document.getElementById('modalMessage').innerText = "Thank you for checking out our responsive web page template! Explore the features and components above.";
+            var myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+            myModal.show();
+        }
+
+        // Function triggered from hero banner button
+        function triggerAlertModal() {
+            document.getElementById('modalTitle').innerText = "Modern Web Design";
+            document.getElementById('modalMessage').innerText = "This page is structured using standard Bootstrap 5 utility classes, custom CSS transitions, and clean layout patterns.";
+            var myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+            myModal.show();
+        }
+
+        // Newsletter subscription handler
+        function subscribeNewsletter() {
+            const input = document.getElementById('newsletterInput');
+            const msg = document.getElementById('newsletterMsg');
+            if (input.value && input.value.includes('@')) {
+                msg.innerText = "Thank you for subscribing!";
+                input.value = '';
+                setTimeout(() => {
+                    msg.innerText = '';
+                }, 4000);
+            } else {
+                document.getElementById('modalTitle').innerText = "Invalid Email";
+                document.getElementById('modalMessage').innerText = "Please enter a valid email address to subscribe.";
+                var myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+                myModal.show();
+            }
+        }
+
+        // Smooth scroll behavior for navigation anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Collapse navbar on mobile after click
+                    const navbarCollapse = document.getElementById('navbarNav');
+                    if (navbarCollapse.classList.contains('show')) {
+                        new bootstrap.Collapse(navbarCollapse).hide();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
