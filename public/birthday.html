@@ -542,6 +542,219 @@
         Crafted with ❤️ for a Very Special Birthday Celebration
     </footer>
 
+    <!-- JavaScript Logic -->
+    <script type="text/javascript">
+        /* ----------------------------------------------------
+           1. Floating Balloons Generator
+        ---------------------------------------------------- */
+        const balloonColors = ['#ff6b8b', '#8a2be2', '#ffd700', '#4caf50', '#00bcd4', '#ff5722'];
+        const balloonContainer = document.getElementById('balloon-container');
 
+        function createBalloons(count = 15) {
+            for (let i = 0; i < count; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                
+                // Random position & styling
+                const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                balloon.style.backgroundColor = color;
+                balloon.style.left = `${Math.random() * 95}%`;
+                balloon.style.animationDuration = `${8 + Math.random() * 8}s`;
+                balloon.style.animationDelay = `${Math.random() * 5}s`;
+
+                balloonContainer.appendChild(balloon);
+            }
+        }
+        createBalloons();
+
+        /* ----------------------------------------------------
+           2. Confetti Particle Canvas Animation
+        ---------------------------------------------------- */
+        function triggerCelebrationConfetti() {
+            if (typeof confetti === 'function') {
+                // Multi-stage confetti burst
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+                setTimeout(() => confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 } }), 200);
+                setTimeout(() => confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 } }), 400);
+            }
+        }
+
+        /* ----------------------------------------------------
+           3. Interactive 3D Card Flip
+        ---------------------------------------------------- */
+        function toggleCardFlip() {
+            const card = document.getElementById('wish-card');
+            card.classList.toggle('flipped');
+            if (card.classList.contains('flipped')) {
+                triggerCelebrationConfetti();
+            }
+        }
+
+        /* ----------------------------------------------------
+           4. Interactive Birthday Cake Candle Logic
+        ---------------------------------------------------- */
+        let litCandlesCount = 3;
+
+        function extinguishCandle(candleElem) {
+            const flame = candleElem.querySelector('.flame');
+            const smoke = candleElem.querySelector('.smoke');
+
+            if (!flame.classList.contains('extinguished')) {
+                flame.classList.add('extinguished');
+                smoke.classList.add('active');
+                litCandlesCount--;
+
+                // Play soft blow out audio synthesis
+                playBlowSound();
+
+                if (litCandlesCount === 0) {
+                    document.getElementById('cake-status').innerHTML = "✨ All wishes made! May they come true! 🎉";
+                    triggerCelebrationConfetti();
+                } else {
+                    document.getElementById('cake-status').innerHTML = `${litCandlesCount} candle(s) left burning!`;
+                }
+            }
+        }
+
+        /* Web Audio API - Blow Sound Effect */
+        function playBlowSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = audioCtx.sampleRate * 0.3;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const output = buffer.getChannelData(0);
+                
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1; // White noise for blow sound
+                }
+
+                const whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = buffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+
+                whiteNoise.connect(filter);
+                filter.connect(audioCtx.destination);
+
+                whiteNoise.start();
+            } catch (e) {
+                console.log("Audio not supported or allowed without interaction");
+            }
+        }
+
+        /* ----------------------------------------------------
+           5. Synthesized Happy Birthday Tune (Web Audio API)
+        ---------------------------------------------------- */
+        let isPlayingMusic = false;
+        let audioContext = null;
+        let musicTimer = null;
+
+        const birthdayNotes = [
+            { note: 261.63, duration: 0.4 }, // C4
+            { note: 261.63, duration: 0.4 }, // C4
+            { note: 293.66, duration: 0.8 }, // D4
+            { note: 261.63, duration: 0.8 }, // C4
+            { note: 349.23, duration: 0.8 }, // F4
+            { note: 329.63, duration: 1.2 }, // E4
+            
+            { note: 261.63, duration: 0.4 }, // C4
+            { note: 261.63, duration: 0.4 }, // C4
+            { note: 293.66, duration: 0.8 }, // D4
+            { note: 261.63, duration: 0.8 }, // C4
+            { note: 392.00, duration: 0.8 }, // G4
+            { note: 349.23, duration: 1.2 }, // F4
+        ];
+
+        document.getElementById('music-toggle').addEventListener('click', () => {
+            const icon = document.getElementById('music-icon');
+            
+            if (!isPlayingMusic) {
+                playSynthesizedTune();
+                isPlayingMusic = true;
+                icon.className = 'fas fa-pause';
+            } else {
+                stopSynthesizedTune();
+                isPlayingMusic = false;
+                icon.className = 'fas fa-music';
+            }
+        });
+
+        function playSynthesizedTune() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            let noteIndex = 0;
+
+            function playNextNote() {
+                if (!isPlayingMusic) return;
+
+                const current = birthdayNotes[noteIndex];
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(current.note, audioContext.currentTime);
+
+                gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + current.duration);
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.start();
+                osc.stop(audioContext.currentTime + current.duration);
+
+                noteIndex = (noteIndex + 1) % birthdayNotes.length;
+                musicTimer = setTimeout(playNextNote, current.duration * 1000 + 100);
+            }
+
+            playNextNote();
+        }
+
+        function stopSynthesizedTune() {
+            if (musicTimer) clearTimeout(musicTimer);
+        }
+
+        /* ----------------------------------------------------
+           6. Interactive Wish Board / Comments Section
+        ---------------------------------------------------- */
+        function addWish(event) {
+            event.preventDefault();
+            const senderInput = document.getElementById('wish-sender');
+            const textInput = document.getElementById('wish-text');
+            const wall = document.getElementById('wishes-wall');
+
+            if (senderInput.value.trim() && textInput.value.trim()) {
+                const newWish = document.createElement('div');
+                newWish.className = 'p-3 bg-white rounded-3 shadow-sm d-flex justify-content-between align-items-center animate__animated animate__fadeIn';
+                newWish.innerHTML = `
+                    <div>
+                        <strong>${escapeHTML(senderInput.value)}</strong>
+                        <p class="mb-0 text-muted small">${escapeHTML(textInput.value)}</p>
+                    </div>
+                    <button class="btn btn-sm btn-light border rounded-circle" onclick="this.innerHTML = '❤️ 1'">❤️</button>
+                `;
+
+                wall.prepend(newWish);
+                senderInput.value = '';
+                textInput.value = '';
+                triggerCelebrationConfetti();
+            }
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Trigger an initial burst of confetti on page load
+        window.onload = () => {
+            setTimeout(triggerCelebrationConfetti, 500);
+        };
+    </script>
 
 </body></html>
