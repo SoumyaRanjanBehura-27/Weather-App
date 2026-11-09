@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuxServices - Premium Digital Platform & Services Dashboard</title>
-    
+    <title>LuxServices — Modern Enterprise Platform</title>
+
     <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons CDN -->
@@ -23,6 +23,10 @@
             --hover-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.25);
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
@@ -39,6 +43,39 @@
             transition: all 0.3s ease;
         }
 
+        /* Nav Link Effects */
+        .nav-link-custom {
+            position: relative;
+            color: #475569 !important;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link-custom::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: 2px;
+            left: 50%;
+            background: var(--primary-gradient);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .nav-link-custom:hover, 
+        .nav-link-custom.active {
+            color: #0f172a !important;
+            font-weight: 600;
+        }
+
+        .nav-link-custom:hover::after,
+        .nav-link-custom.active::after {
+            width: 80%;
+        }
+
         /* Hero Banner Section */
         .hero-banner {
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #31103f 100%);
@@ -48,6 +85,15 @@
             border-bottom-right-radius: 2.5rem;
             padding-top: 5rem;
             padding-bottom: 6rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-banner {
+                border-bottom-left-radius: 1.5rem;
+                border-bottom-right-radius: 1.5rem;
+                padding-top: 3rem;
+                padding-bottom: 4rem;
+            }
         }
 
         .hero-banner::before {
@@ -129,7 +175,7 @@
             border-color: #ffffff;
         }
 
-        /* Interactive Service Cards */
+        /* Dynamic Service Cards */
         .service-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -159,6 +205,20 @@
             margin-bottom: 1rem;
         }
 
+        /* Feature Card Section */
+        .feature-box {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            border-color: #6366f1;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1);
+        }
+
         /* Social Auth Buttons */
         .btn-social {
             border: 1px solid #e2e8f0;
@@ -182,8 +242,9 @@
         }
     </style>
 </head>
-<body>
+<body data-bs-spy="scroll" data-bs-target="#navbarContent" data-bs-offset="100">
 
+    <!-- Navbar Header -->
     <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3 px-3 px-lg-5">
         <div class="container-fluid">
             <!-- Brand Logo -->
@@ -201,16 +262,24 @@
 
             <!-- Navbar Menu & Actions -->
             <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
-                <!-- Nav Links -->
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3 fw-medium">
-                    <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="#solutions">Solutions</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="#pricing">Pricing</a></li>
+                <!-- Nav Links with Smooth Scrolling & Hover Effects -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2 fw-medium">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#solutions">Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#pricing">Pricing</a>
+                    </li>
                 </ul>
 
                 <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
-                    <!-- Navbar Search Bar -->
+                    <!-- Navbar Quick Search Bar -->
                     <div class="input-group d-none d-xl-flex" style="width: 240px;">
                         <span class="input-group-text bg-light border-end-0 rounded-start-pill text-muted pe-1">
                             <i class="fa-solid fa-magnifying-glass fs-7"></i>
@@ -218,9 +287,9 @@
                         <input type="text" id="navSearchInput" class="form-control bg-light border-start-0 rounded-end-pill fs-7 shadow-none" placeholder="Quick search...">
                     </div>
 
-                    <!-- Auth Button -->
+                    <!-- Interactive Auth Button -->
                     <button class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#authModal" id="authBtn">
-                        <i class="fa-regular fa-user"></i>
+                        <i class="fa-regular fa-user" id="authBtnIcon"></i>
                         <span id="authBtnText">Sign In / Register</span>
                     </button>
                 </div>
@@ -228,6 +297,7 @@
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero-banner text-white px-3 px-lg-5">
         <div class="container py-4 position-relative" style="z-index: 2;">
             <div class="row align-items-center justify-content-center text-center">
@@ -238,11 +308,11 @@
                     <h1 class="display-4 fw-extrabold mb-3 tracking-tight lh-sm">
                         Empower Your Digital Growth With <span class="gradient-text">Elite Solutions</span>
                     </h1>
-                    <p class="lead text-slate-300 text-muted mb-4 fs-6 mx-auto" style="max-width: 680px;">
+                    <p class="lead text-slate-300 text-white-50 mb-4 fs-6 mx-auto" style="max-width: 680px;">
                         Discover enterprise-grade API integrations, AI workflows, and cloud infrastructure services designed to scale your modern digital business seamlessly.
                     </p>
 
-                    <!-- Main Search Input Bar -->
+                    <!-- Hero Search Bar Input -->
                     <div class="bg-white p-2 rounded-pill shadow-lg d-flex align-items-center mb-4 max-w-lg mx-auto" style="max-width: 620px;">
                         <span class="ps-3 text-muted fs-5"><i class="fa-solid fa-magnifying-glass"></i></span>
                         <input type="text" id="heroSearchInput" class="form-control border-0 shadow-none px-3 bg-transparent fs-6" placeholder="Search AI tools, APIs, cloud infrastructure...">
@@ -264,6 +334,7 @@
         </div>
     </section>
 
+    <!-- Services Grid Section -->
     <section id="services" class="container py-5">
         <!-- Controls Header -->
         <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
@@ -294,8 +365,9 @@
             <button class="filter-chip" data-category="Analytics">Data Analytics</button>
         </div>
 
+        <!-- Dynamic Grid Container -->
         <div class="row g-4" id="servicesGrid">
-            <!-- Dynamic JavaScript Content Injected Here -->
+            <!-- JavaScript Cards Injected Dynamically -->
         </div>
 
         <!-- Empty Results State -->
@@ -309,6 +381,99 @@
         </div>
     </section>
 
+    <!-- Solutions Section -->
+    <section id="solutions" class="bg-light py-5">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3 fw-semibold">Tailored Architecture</span>
+                    <h2 class="fw-extrabold text-dark display-6 mb-3">Enterprise Scalability Built For Rapid Growth</h2>
+                    <p class="text-muted mb-4">Our high-performance microservices architecture provides developer-first SDKs, automated deployment pipelines, and multi-region failovers out of the box.</p>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex gap-3">
+                            <div class="bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                                <i class="fa-solid fa-bolt text-warning fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Sub-Millisecond Execution</h6>
+                                <p class="text-muted small mb-0">Edge-optimized serverless routines for real-time applications.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                                <i class="fa-solid fa-lock text-success fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Zero-Trust Encrypted Storage</h6>
+                                <p class="text-muted small mb-0">SOC2 Type II compliant storage pipelines and end-to-end telemetry safety.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-4 bg-dark text-white rounded-4 shadow-lg border border-secondary border-opacity-25">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-danger rounded-pill px-3">Live Network Telemetry</span>
+                            <span class="small text-white-50"><i class="fa-solid fa-circle text-success me-1 fs-7"></i> Systems Operational</span>
+                        </div>
+                        <pre class="bg-black p-3 rounded-3 text-success fs-7 mb-0"><code>// Initialize Lux Platform Client
+import { LuxClient } from '@lux/sdk';
+
+const lux = new LuxClient({
+  apiKey: process.env.LUX_API_KEY,
+  region: 'us-east-1'
+});
+
+const deployment = await lux.deploy({
+  service: 'neural-vision-ai',
+  autoscale: true
+});
+
+console.log(`Deployed to: ${deployment.url}`);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="container py-5">
+        <div class="text-center max-w-lg mx-auto mb-5" style="max-width: 600px;">
+            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 mb-2 fw-semibold">Why Choose Lux</span>
+            <h2 class="fw-extrabold text-dark h3">Designed for Modern Engineering Teams</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="card-icon-wrapper bg-primary bg-opacity-10 text-primary">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h5 class="fw-bold">Developer First API</h5>
+                    <p class="text-muted small mb-0">Intuitive REST and GraphQL endpoints backed by extensive SDK support across JavaScript, Python, and Go.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="card-icon-wrapper bg-success bg-opacity-10 text-success">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h5 class="fw-bold">Real-time Analytics</h5>
+                    <p class="text-muted small mb-0">Monitor request volumes, error rates, and latencies through customizable interactive dashboards.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="card-icon-wrapper bg-purple bg-opacity-10 text-purple" style="color: #8b5cf6; background: rgba(139, 92, 246, 0.1);">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h5 class="fw-bold">Dynamic Auto-Scaling</h5>
+                    <p class="text-muted small mb-0">Seamlessly scale infrastructure from single requests up to enterprise volume surges without dropoffs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Service Modal -->
     <div class="modal fade" id="serviceDetailModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
@@ -316,7 +481,7 @@
                     <div class="d-flex align-items-center gap-3">
                         <div id="modalIconContainer" class="card-icon-wrapper mb-0 bg-white text-dark"></div>
                         <div>
-                            <span id="modalCategoryBadge" class="badge bg-indigo text-white mb-1"></span>
+                            <span id="modalCategoryBadge" class="badge bg-primary text-white mb-1"></span>
                             <h5 class="modal-title fw-bold text-white mb-0" id="modalTitle">Service Title</h5>
                         </div>
                     </div>
@@ -330,14 +495,14 @@
                             
                             <h6 class="fw-bold text-dark mb-2">Key Features & Capabilities</h6>
                             <ul id="modalFeatureList" class="list-unstyled text-muted small d-flex flex-column gap-2">
-                                <!-- Dynamic List -->
+                                <!-- Dynamic Features -->
                             </ul>
                         </div>
                         <div class="col-md-5 bg-light p-4 rounded-3 d-flex flex-column justify-content-between">
                             <div>
                                 <h6 class="fw-bold text-dark mb-3">Deployment Tier</h6>
                                 <div class="d-flex align-items-baseline mb-2">
-                                    <span id="modalPrice" class="display-6 fw-extrabold text-indigo me-1"></span>
+                                    <span id="modalPrice" class="display-6 fw-extrabold text-primary me-1"></span>
                                     <span class="text-muted small" id="modalBillingCycle">/ month</span>
                                 </div>
                                 <div class="text-warning small mb-3" id="modalRating"></div>
@@ -362,13 +527,14 @@
         </div>
     </div>
 
+    <!-- Auth Modal (Sign In / Register) -->
     <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
                 <div class="modal-header bg-dark text-white p-4 pb-3 border-0">
                     <div>
                         <h5 class="modal-title fw-extrabold" id="authModalTitle">Access LuxPlatform</h5>
-                        <p class="text-muted small mb-0">Manage your enterprise services and API credentials</p>
+                        <p class="text-white-50 small mb-0">Manage your enterprise services and API credentials</p>
                     </div>
                     <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -396,7 +562,7 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <label class="form-label small fw-medium text-dark mb-0">Password</label>
-                                        <a href="#" class="small text-decoration-none text-indigo">Forgot?</a>
+                                        <a href="#" class="small text-decoration-none text-primary">Forgot?</a>
                                     </div>
                                     <input type="password" class="form-control rounded-3 py-2 fs-7" id="loginPassword" placeholder="••••••••" required>
                                 </div>
@@ -415,8 +581,8 @@
                             </div>
 
                             <div class="d-flex gap-2">
-                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small"><i class="fa-brands fa-google text-danger me-1"></i> Google</button>
-                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small"><i class="fa-brands fa-github text-dark me-1"></i> GitHub</button>
+                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small" onclick="handleSocialAuth('Google')"><i class="fa-brands fa-google text-danger me-1"></i> Google</button>
+                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small" onclick="handleSocialAuth('GitHub')"><i class="fa-brands fa-github text-dark me-1"></i> GitHub</button>
                             </div>
                         </div>
 
@@ -450,6 +616,7 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer id="pricing" class="bg-dark text-white pt-5 pb-4 mt-5">
         <div class="container">
             <div class="row g-4 mb-5">
@@ -461,7 +628,7 @@
                         </span>
                         <span class="fs-5 fw-extrabold text-white">LuxServices</span>
                     </div>
-                    <p class="text-muted small mb-4" style="max-width: 320px;">
+                    <p class="text-white-50 small mb-4" style="max-width: 320px;">
                         Architecting high-performance API platforms, automated AI workflows, and enterprise cloud solutions for visionary teams worldwide.
                     </p>
                     <div class="d-flex gap-3 fs-5">
@@ -476,10 +643,10 @@
                 <div class="col-lg-2 col-md-6">
                     <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Services</h6>
                     <ul class="list-unstyled d-flex flex-column gap-2 small">
-                        <li><a href="#" class="text-decoration-none text-muted">AI & Neural Models</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">Cloud Compute</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">DevOps Pipelines</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">Zero-Trust Security</a></li>
+                        <li><a href="#services" class="text-decoration-none text-white-50">AI & Neural Models</a></li>
+                        <li><a href="#services" class="text-decoration-none text-white-50">Cloud Compute</a></li>
+                        <li><a href="#services" class="text-decoration-none text-white-50">DevOps Pipelines</a></li>
+                        <li><a href="#services" class="text-decoration-none text-white-50">Zero-Trust Security</a></li>
                     </ul>
                 </div>
 
@@ -487,17 +654,17 @@
                 <div class="col-lg-2 col-md-6">
                     <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Solutions</h6>
                     <ul class="list-unstyled d-flex flex-column gap-2 small">
-                        <li><a href="#" class="text-decoration-none text-muted">Enterprise Scaling</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">SaaS Architecture</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">API Gateway</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">Data Intelligence</a></li>
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">Enterprise Scaling</a></li>
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">SaaS Architecture</a></li>
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">API Gateway</a></li>
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">Data Intelligence</a></li>
                     </ul>
                 </div>
 
                 <!-- Column 3: Newsletter -->
                 <div class="col-lg-4 col-md-6">
                     <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Stay Updated</h6>
-                    <p class="small text-muted mb-3">Subscribe to receive developer updates, platform news, and release notes.</p>
+                    <p class="small text-white-50 mb-3">Subscribe to receive developer updates, platform news, and release notes.</p>
                     <form id="newsletterForm" class="input-group">
                         <input type="email" id="newsletterEmail" class="form-control rounded-start-pill bg-dark text-white border-secondary shadow-none fs-7" placeholder="developer@company.com" required>
                         <button class="btn btn-gradient rounded-end-pill px-4 fs-7" type="submit">Subscribe</button>
@@ -507,23 +674,26 @@
 
             <hr class="border-secondary opacity-25">
             <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start small text-muted">
+                <div class="col-md-6 text-center text-md-start small text-white-50">
                     &copy; 2026 LuxServices Inc. All rights reserved.
                 </div>
-                <div class="col-md-6 text-center text-md-end small text-muted mt-2 mt-md-0">
-                    <a href="#" class="text-decoration-none text-muted me-3">Privacy Policy</a>
-                    <a href="#" class="text-decoration-none text-muted me-3">Terms of Service</a>
-                    <a href="#" class="text-decoration-none text-muted">Security</a>
+                <div class="col-md-6 text-center text-md-end small text-white-50 mt-2 mt-md-0">
+                    <a href="#" class="text-decoration-none text-white-50 me-3">Privacy Policy</a>
+                    <a href="#" class="text-decoration-none text-white-50 me-3">Terms of Service</a>
+                    <a href="#" class="text-decoration-none text-white-50">Security</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Dynamic Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Bootstrap 5 JS Bundle CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script type="text/javascript">
-        // Service Platform Data Source
+        // Expanded Data Source
         const servicesData = [
             {
                 id: 1,
@@ -620,268 +790,271 @@
                 rating: 4.8,
                 reviews: 115,
                 badge: "",
-                description: "Automated CI/CD GitOps workflow tool designed to build, test, and deploy microservices to Kubernetes clusters safely.",
-                features: ["GitOps native synchronization", "Canary deployment support", "Role-based access controls"]
-            },
-            {
-                id: 8,
-                title: "Multi-Cloud Storage Vault",
-                category: "Cloud Solutions",
-                icon: "fa-database",
-                bgColor: "#e0f2fe",
-                iconColor: "#0284c7",
-                price: 69,
-                rating: 4.7,
-                reviews: 63,
-                badge: "Best Value",
-                description: "Encrypted distributed object storage platform providing cross-region redundancy and instant data restoration capability.",
-                features: ["AES-256 Encryption", "Immutable backup vaults", "S3 API compatibility"]
+                description: "Automated CI/CD GitOps workflow tool designed to build, test, and deploy microservices dynamically.",
+                features: ["GitOps automated triggers", "Canary deployment support", "Cluster health analytics"]
             }
         ];
 
-        // App State
-        let currentCategory = 'all';
+        // State Management
+        let activeCategory = 'all';
         let searchQuery = '';
         let currentSort = 'popular';
+        let currentUser = null;
 
-        // DOM Elements
-        const servicesGrid = document.getElementById('servicesGrid');
-        const noResultsState = document.getElementById('noResultsState');
-        const itemCountDisplay = document.getElementById('itemCountDisplay');
-        const categoryFilterContainer = document.getElementById('categoryFilterContainer');
-        const heroSearchInput = document.getElementById('heroSearchInput');
-        const heroSearchBtn = document.getElementById('heroSearchBtn');
-        const navSearchInput = document.getElementById('navSearchInput');
-        const sortSelect = document.getElementById('sortSelect');
-        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
-        const authBtnText = document.getElementById('authBtnText');
-
-        // Initialization
+        // Initialize DOM Elements
         document.addEventListener('DOMContentLoaded', () => {
             renderServices();
             setupEventListeners();
+            setupNavSmoothScroll();
         });
 
-        function setupEventListeners() {
-            // Category Filter Click
-            categoryFilterContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('filter-chip')) {
-                    document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => btn.classList.remove('active'));
-                    e.target.classList.add('active');
-                    currentCategory = e.target.getAttribute('data-category');
-                    renderServices();
-                }
+        // Interactive Nav Scroll & Mobile Collapse
+        function setupNavSmoothScroll() {
+            const navLinks = document.querySelectorAll('.nav-link-custom');
+            const navbarCollapse = document.getElementById('navbarContent');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+
+                        if (navbarCollapse.classList.contains('show')) {
+                            const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                            if (bsCollapse) bsCollapse.hide();
+                        }
+                    }
+                });
+            });
+        }
+
+        // Render Cards Grid
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            const noResults = document.getElementById('noResultsState');
+            const itemCounter = document.getElementById('itemCountDisplay');
+
+            // Filter
+            let filtered = servicesData.filter(item => {
+                const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.category.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
             });
 
-            // Quick Hero Pill Click
-            document.querySelectorAll('.hero-pill').forEach(pill => {
-                pill.addEventListener('click', (e) => {
-                    const cat = e.target.getAttribute('data-quick');
-                    currentCategory = cat;
-                    // Update active state in category bar
-                    document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => {
-                        btn.classList.toggle('active', btn.getAttribute('data-category') === cat);
+            // Sort
+            filtered.sort((a, b) => {
+                if (currentSort === 'rating') return b.rating - a.rating;
+                if (currentSort === 'price-asc') return a.price - b.price;
+                if (currentSort === 'price-desc') return b.price - a.price;
+                return b.reviews - a.reviews; // Default 'popular'
+            });
+
+            // Update Counter Text
+            itemCounter.textContent = `Showing ${filtered.length} service${filtered.length === 1 ? '' : 's'}`;
+
+            // Render Output
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('d-none');
+                return;
+            }
+
+            noResults.classList.add('d-none');
+            grid.innerHTML = filtered.map(item => `
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="service-card p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="card-icon-wrapper" style="background-color: ${item.bgColor}; color: ${item.iconColor};">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            ${item.badge ? `<span class="badge bg-indigo text-primary bg-primary-subtle rounded-pill px-3 py-1 fw-semibold fs-8">${item.badge}</span>` : ''}
+                        </div>
+                        <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">${item.category}</span>
+                        <h5 class="fw-bold text-dark mt-1 mb-2">${item.title}</h5>
+                        <p class="text-muted small mb-3 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                            ${item.description}
+                        </p>
+                        
+                        <div class="d-flex align-items-center gap-1 mb-3 text-warning small">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="fw-bold text-dark me-1">${item.rating}</span>
+                            <span class="text-muted">(${item.reviews} reviews)</span>
+                        </div>
+
+                        <div class="pt-3 border-top d-flex align-items-center justify-content-between mt-auto">
+                            <div>
+                                <span class="fs-4 fw-extrabold text-dark">$${item.price}</span>
+                                <span class="text-muted small">/mo</span>
+                            </div>
+                            <button class="btn btn-outline-dark rounded-pill px-3 py-1.5 fs-7 fw-semibold" onclick="openServiceModal(${item.id})">
+                                Inspect
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Attach Event Listeners
+        function setupEventListeners() {
+            // Category Filter Pills
+            document.getElementById('categoryFilterContainer').addEventListener('click', (e) => {
+                const button = e.target.closest('.filter-chip');
+                if (!button) return;
+
+                document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeCategory = button.getAttribute('data-category');
+                renderServices();
+            });
+
+            // Quick Hero Filters
+            document.querySelectorAll('[data-quick]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const cat = btn.getAttribute('data-quick');
+                    activeCategory = cat;
+                    
+                    document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(chip => {
+                        chip.classList.toggle('active', chip.getAttribute('data-category') === cat);
                     });
-                    renderServices();
+
                     document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+                    renderServices();
                 });
             });
 
-            // Search Inputs
-            heroSearchInput.addEventListener('input', (e) => {
-                searchQuery = e.target.value.toLowerCase().trim();
-                renderServices();
-            });
+            // Search Inputs Sync
+            const heroInput = document.getElementById('heroSearchInput');
+            const navInput = document.getElementById('navSearchInput');
 
-            heroSearchBtn.addEventListener('click', () => {
-                searchQuery = heroSearchInput.value.toLowerCase().trim();
+            const handleSearch = (val) => {
+                searchQuery = val;
+                heroInput.value = val;
+                navInput.value = val;
                 renderServices();
+            };
+
+            heroInput.addEventListener('input', (e) => handleSearch(e.target.value));
+            navInput.addEventListener('input', (e) => handleSearch(e.target.value));
+            document.getElementById('heroSearchBtn').addEventListener('click', () => {
                 document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
             });
 
-            navSearchInput.addEventListener('input', (e) => {
-                searchQuery = e.target.value.toLowerCase().trim();
-                renderServices();
-            });
-
             // Sorting Select
-            sortSelect.addEventListener('change', (e) => {
+            document.getElementById('sortSelect').addEventListener('change', (e) => {
                 currentSort = e.target.value;
                 renderServices();
             });
 
-            // Reset Filters
-            resetFiltersBtn.addEventListener('click', () => {
-                currentCategory = 'all';
+            // Reset Filter Button
+            document.getElementById('resetFiltersBtn').addEventListener('click', () => {
                 searchQuery = '';
-                currentSort = 'popular';
-                heroSearchInput.value = '';
-                navSearchInput.value = '';
-                sortSelect.value = 'popular';
-                
+                activeCategory = 'all';
+                heroInput.value = '';
+                navInput.value = '';
                 document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => {
                     btn.classList.toggle('active', btn.getAttribute('data-category') === 'all');
                 });
                 renderServices();
             });
 
-            // Login Form Submit
+            // Forms Submit Handlers
             document.getElementById('loginForm').addEventListener('submit', (e) => {
                 e.preventDefault();
                 const email = document.getElementById('loginEmail').value;
-                const name = email.split('@')[0];
-                authBtnText.textContent = name.charAt(0).toUpperCase() + name.slice(1);
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
-                modal.hide();
-                showNotification(`Successfully logged in as ${email}`);
+                loginUser(email.split('@')[0]);
             });
 
-            // Signup Form Submit
             document.getElementById('signupForm').addEventListener('submit', (e) => {
                 e.preventDefault();
                 const name = document.getElementById('signupName').value;
-                authBtnText.textContent = name.split(' ')[0];
-                
-                const modal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
-                modal.hide();
-                showNotification(`Welcome to LuxServices, ${name}!`);
+                loginUser(name);
             });
 
-            // Newsletter Submit
             document.getElementById('newsletterForm').addEventListener('submit', (e) => {
                 e.preventDefault();
-                showNotification('Thank you for subscribing to developer updates!');
+                showToast('Success!', 'Thank you for subscribing to developer updates.');
                 document.getElementById('newsletterEmail').value = '';
             });
-        }
 
-        function renderServices() {
-            // Filter
-            let filtered = servicesData.filter(item => {
-                const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
-                const matchesSearch = item.title.toLowerCase().includes(searchQuery) || 
-                                      item.description.toLowerCase().includes(searchQuery) ||
-                                      item.category.toLowerCase().includes(searchQuery);
-                return matchesCategory && matchesSearch;
-            });
-
-            // Sort
-            if (currentSort === 'rating') {
-                filtered.sort((a, b) => b.rating - a.rating);
-            } else if (currentSort === 'price-asc') {
-                filtered.sort((a, b) => a.price - b.price);
-            } else if (currentSort === 'price-desc') {
-                filtered.sort((a, b) => b.price - a.price);
-            } else {
-                // Popularity / Default ID
-                filtered.sort((a, b) => b.reviews - a.reviews);
-            }
-
-            // Update Count Display
-            itemCountDisplay.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? 'service' : 'services'}`;
-
-            // Render
-            servicesGrid.innerHTML = '';
-            if (filtered.length === 0) {
-                noResultsState.classList.remove('d-none');
-                return;
-            }
-            noResultsState.classList.add('d-none');
-
-            filtered.forEach(service => {
-                const col = document.createElement('div');
-                col.className = 'col-md-6 col-lg-4 col-xl-3';
-                col.innerHTML = `
-                    <div class="service-card p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="card-icon-wrapper mb-0" style="background-color: ${service.bgColor}; color: ${service.iconColor};">
-                                <i class="fa-solid ${service.icon}"></i>
-                            </div>
-                            ${service.badge ? `<span class="badge bg-dark rounded-pill px-3 py-1.5 font-semibold fs-8">${service.badge}</span>` : ''}
-                        </div>
-
-                        <div class="mb-3">
-                            <span class="text-uppercase fw-bold text-muted" style="font-size: 0.68rem; letter-spacing: 0.05em;">${service.category}</span>
-                            <h5 class="fw-bold text-dark h6 my-1 text-truncate" title="${service.title}">${service.title}</h5>
-                            <p class="text-muted small line-clamp-2 mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px;">
-                                ${service.description}
-                            </p>
-                        </div>
-
-                        <div class="pt-3 border-top mt-auto d-flex align-items-center justify-content-between">
-                            <div>
-                                <div class="text-warning small" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-star"></i> <strong class="text-dark">${service.rating}</strong> <span class="text-muted">(${service.reviews})</span>
-                                </div>
-                                <span class="fw-extrabold text-dark fs-5">$${service.price}</span><span class="text-muted small">/mo</span>
-                            </div>
-                            <button class="btn btn-outline-dark rounded-pill btn-sm px-3 fw-semibold" onclick="openServiceDetail(${service.id})">
-                                Details
-                            </button>
-                        </div>
-                    </div>
-                `;
-                servicesGrid.appendChild(col);
+            document.getElementById('deployServiceBtn').addEventListener('click', () => {
+                const modalEl = document.getElementById('serviceDetailModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) modalInstance.hide();
+                showToast('Deployment Initialized', 'Service container environment provisioning has started.');
             });
         }
 
-        function openServiceDetail(id) {
-            const service = servicesData.find(s => s.id === id);
-            if (!service) return;
+        // Open Service Modal Dynamic Populator
+        function openServiceModal(id) {
+            const item = servicesData.find(s => s.id === id);
+            if (!item) return;
 
-            document.getElementById('modalIconContainer').style.backgroundColor = service.bgColor;
-            document.getElementById('modalIconContainer').style.color = service.iconColor;
-            document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${service.icon}"></i>`;
-            document.getElementById('modalCategoryBadge').textContent = service.category;
-            document.getElementById('modalTitle').textContent = service.title;
-            document.getElementById('modalDescription').textContent = service.description;
-            document.getElementById('modalPrice').textContent = `$${service.price}`;
-            document.getElementById('modalRating').innerHTML = `<i class="fa-solid fa-star"></i> ${service.rating} score rating (${service.reviews} enterprise clients)`;
+            document.getElementById('modalCategoryBadge').textContent = item.category;
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalPrice').textContent = `$${item.price}`;
+            
+            const iconBox = document.getElementById('modalIconContainer');
+            iconBox.style.backgroundColor = item.bgColor;
+            iconBox.style.color = item.iconColor;
+            iconBox.innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
 
-            const featureList = document.getElementById('modalFeatureList');
-            featureList.innerHTML = service.features.map(f => `
+            document.getElementById('modalRating').innerHTML = `
+                <i class="fa-solid fa-star"></i> <strong>${item.rating}</strong> (${item.reviews} total reviews)
+            `;
+
+            const list = document.getElementById('modalFeatureList');
+            list.innerHTML = item.features.map(f => `
                 <li class="d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-circle-check text-success"></i> ${f}
+                    <i class="fa-solid fa-circle-check text-success fs-6"></i> ${f}
                 </li>
             `).join('');
-
-            const deployBtn = document.getElementById('deployServiceBtn');
-            deployBtn.onclick = () => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('serviceDetailModal'));
-                modal.hide();
-                showNotification(`Successfully initialized deployment for ${service.title}!`);
-            };
 
             const modal = new bootstrap.Modal(document.getElementById('serviceDetailModal'));
             modal.show();
         }
 
-        function showNotification(message) {
-            let container = document.getElementById('toastContainer');
-            if (!container) {
-                container = document.createElement('div');
-                container.id = 'toastContainer';
-                container.className = 'toast-container p-3';
-                document.body.appendChild(container);
-            }
+        // Handle User Login Simulation
+        function loginUser(username) {
+            currentUser = username;
+            document.getElementById('authBtnText').textContent = currentUser;
+            document.getElementById('authBtnIcon').className = 'fa-solid fa-user-check text-success';
+            
+            const modalEl = document.getElementById('authModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
 
+            showToast('Welcome back!', `Signed in as ${username}`);
+        }
+
+        function handleSocialAuth(provider) {
+            loginUser(`${provider} User`);
+        }
+
+        // Custom Dynamic Toast Notification Utility
+        function showToast(title, message) {
+            const container = document.getElementById('toastContainer');
             const toastEl = document.createElement('div');
-            toastEl.className = 'toast align-items-center text-white bg-dark border-0 shadow-lg rounded-3';
-            toastEl.role = 'alert';
+            toastEl.className = 'toast show border-0 shadow-lg rounded-3 mb-2';
+            toastEl.setAttribute('role', 'alert');
             toastEl.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-circle-check text-success fs-5"></i> ${message}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto shadow-none" data-bs-dismiss="toast"></button>
+                <div class="toast-header bg-dark text-white rounded-top-3">
+                    <i class="fa-solid fa-bell me-2 text-warning"></i>
+                    <strong class="me-auto">${title}</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body bg-white text-dark rounded-bottom-3 fs-7">
+                    ${message}
                 </div>
             `;
             container.appendChild(toastEl);
-            const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
-            toast.show();
-
-            toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
+            setTimeout(() => {
+                toastEl.remove();
+            }, 4000);
         }
     </script>
 </body>

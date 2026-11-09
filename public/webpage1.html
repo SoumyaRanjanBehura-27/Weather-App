@@ -3,830 +3,1059 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusApp - Modern Productivity Platform</title>
+    <title>LuxServices — Modern Enterprise Platform</title>
 
-    <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    
-    <!-- Google Fonts (Inter) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style type="text/css">
-        /* ==========================================================================
-           Custom CSS & Variables
-           ========================================================================== */
         :root {
-            --primary-color: #4f46e5;
-            --primary-hover: #4338ca;
-            --accent-color: #06b6d4;
+            --primary-accent: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
             --dark-bg: #0f172a;
-            --light-bg: #f8fafc;
-            --card-border: #e2e8f0;
-            --text-main: #334155;
-            --text-muted: #64748b;
+            --glass-card-bg: rgba(255, 255, 255, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.25);
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
-            background-color: #ffffff;
-            overflow-x: hidden;
-        }
-
-        /* Smooth Scrolling */
         html {
             scroll-behavior: smooth;
         }
 
-        /* Custom Buttons */
-        .btn-primary-custom {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 1.75rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.25s ease;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
         }
 
-        .btn-primary-custom:hover {
-            background-color: var(--primary-hover);
-            color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-        }
-
-        .btn-outline-custom {
-            border: 2px solid #cbd5e1;
-            color: var(--text-main);
-            padding: 0.75rem 1.75rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.25s ease;
-        }
-
-        .btn-outline-custom:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background-color: rgba(79, 70, 229, 0.05);
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.9) !important;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        /* Glassmorphism Navbar */
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             transition: all 0.3s ease;
         }
 
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.4rem;
-            color: var(--dark-bg);
-        }
-
-        .navbar-brand span {
-            color: var(--primary-color);
-        }
-
-        .nav-link {
+        /* Nav Link Effects */
+        .nav-link-custom {
+            position: relative;
+            color: #475569 !important;
             font-weight: 500;
-            color: var(--text-main);
-            margin: 0 0.5rem;
-            transition: color 0.2s ease;
+            padding: 0.5rem 0.75rem !important;
+            transition: color 0.3s ease;
         }
 
-        .nav-link:hover, .nav-link.active {
-            color: var(--primary-color);
+        .nav-link-custom::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: 2px;
+            left: 50%;
+            background: var(--primary-gradient);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(-50%);
+            border-radius: 2px;
         }
 
-        /* Hero Section */
-        .hero-section {
-            padding: 8rem 0 5rem 0;
-            background: radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.08) 0%, transparent 40%);
-        }
-
-        .badge-custom {
-            background-color: rgba(79, 70, 229, 0.1);
-            color: var(--primary-color);
+        .nav-link-custom:hover, 
+        .nav-link-custom.active {
+            color: #0f172a !important;
             font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        .hero-title {
-            font-size: clamp(2.5rem, 5vw, 3.75rem);
-            font-weight: 800;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
+        .nav-link-custom:hover::after,
+        .nav-link-custom.active::after {
+            width: 80%;
         }
 
-        .hero-title span {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        /* Hero Banner Section */
+        .hero-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #31103f 100%);
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 2.5rem;
+            border-bottom-right-radius: 2.5rem;
+            padding-top: 5rem;
+            padding-bottom: 6rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-banner {
+                border-bottom-left-radius: 1.5rem;
+                border-bottom-right-radius: 1.5rem;
+                padding-top: 3rem;
+                padding-bottom: 4rem;
+            }
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            right: -100px;
+            pointer-events: none;
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(217, 70, 239, 0.15) 0%, rgba(0,0,0,0) 70%);
+            bottom: -150px;
+            left: -50px;
+            pointer-events: none;
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-image-card {
-            border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border: 1px solid var(--card-border);
-            overflow: hidden;
-            background-color: #ffffff;
+        /* Custom Buttons */
+        .btn-gradient {
+            background: var(--primary-gradient);
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        /* Feature Cards */
-        .feature-card {
-            border: 1px solid var(--card-border);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: all 0.3s ease;
+        .btn-gradient:hover {
+            opacity: 0.93;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Filter Pills */
+        .filter-chip {
+            border: 1px solid #e2e8f0;
             background: #ffffff;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 50rem;
+            padding: 0.5rem 1.25rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-chip.active, .filter-chip:hover {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+
+        .hero-pill {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-pill:hover, .hero-pill.active {
+            background: #ffffff;
+            color: #0f172a;
+            border-color: #ffffff;
+        }
+
+        /* Dynamic Service Cards */
+        .service-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.25rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
             height: 100%;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            border-color: rgba(79, 70, 229, 0.3);
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--hover-shadow);
+            border-color: #c7d2fe;
         }
 
-        .feature-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 0.75rem;
-            background-color: rgba(79, 70, 229, 0.1);
-            color: var(--primary-color);
+        .card-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.25rem;
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
         }
 
-        /* Demo App Section */
-        .demo-section {
-            background-color: var(--light-bg);
-            border-top: 1px solid var(--card-border);
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .task-card {
+        /* Feature Card Section */
+        .feature-box {
             background: #ffffff;
             border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
         }
 
-        .task-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.85rem 1rem;
-            border-bottom: 1px solid #f1f5f9;
-            transition: background 0.2s ease;
+        .feature-box:hover {
+            border-color: #6366f1;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1);
         }
 
-        .task-item:last-child {
-            border-bottom: none;
+        /* Social Auth Buttons */
+        .btn-social {
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #334155;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
-        .task-item:hover {
-            background-color: #f8fafc;
+        .btn-social:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
         }
 
-        .task-item.completed .task-text {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        /* Custom Scrollbar for Tasks */
-        .task-list-container {
-            max-height: 280px;
-            overflow-y: auto;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark-bg);
-            color: #94a3b8;
-        }
-
-        footer a {
-            color: #cbd5e1;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        footer a:hover {
-            color: #ffffff;
-        }
-
-        /* Notification Toast Styling */
+        /* Toast Container */
         .toast-container {
             position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 1080;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1100;
         }
     </style>
 </head>
-<body>
+<body data-bs-spy="scroll" data-bs-target="#navbarContent" data-bs-offset="100">
 
-    <!-- ==========================================================================
-       Navigation Bar
-       ========================================================================== -->
-    <nav class="navbar navbar-expand-lg fixed-top py-3">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-                <i class="bi bi-hexagon-fill text-primary"></i>
-                Nexus<span>App</span>
+    <!-- Navbar Header -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3 px-3 px-lg-5">
+        <div class="container-fluid">
+            <!-- Brand Logo -->
+            <a class="navbar-brand fw-extrabold fs-4 d-flex align-items-center gap-2" href="#">
+                <span class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="fa-solid fa-layer-group"></i>
+                </span>
+                <span class="fw-bold text-dark tracking-tight">Lux<span class="gradient-text">Services</span></span>
             </a>
-            
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="bi bi-list fs-2"></i>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" href="#hero">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#demo">Live Demo</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            <!-- Navbar Menu & Actions -->
+            <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
+                <!-- Nav Links with Smooth Scrolling & Hover Effects -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2 fw-medium">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#solutions">Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#pricing">Pricing</a>
+                    </li>
                 </ul>
-                <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-outline-custom d-none d-sm-inline-block" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Log In</button>
-                    <button class="btn btn-primary-custom" type="button">Get Started</button>
+
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                    <!-- Navbar Quick Search Bar -->
+                    <div class="input-group d-none d-xl-flex" style="width: 240px;">
+                        <span class="input-group-text bg-light border-end-0 rounded-start-pill text-muted pe-1">
+                            <i class="fa-solid fa-magnifying-glass fs-7"></i>
+                        </span>
+                        <input type="text" id="navSearchInput" class="form-control bg-light border-start-0 rounded-end-pill fs-7 shadow-none" placeholder="Quick search...">
+                    </div>
+
+                    <!-- Interactive Auth Button -->
+                    <button class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#authModal" id="authBtn">
+                        <i class="fa-regular fa-user" id="authBtnIcon"></i>
+                        <span id="authBtnText">Sign In / Register</span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- ==========================================================================
-       Hero Section
-       ========================================================================== -->
-    <section id="hero" class="hero-section">
-        <div class="container">
-            <div class="row align-items-center gy-5">
-                <div class="col-lg-6">
-                    <div class="badge-custom mb-3">
-                        <i class="bi bi-stars"></i> Next-Gen Platform 2.0
-                    </div>
-                    <h1 class="hero-title mb-4">
-                        Manage tasks with <span>effortless precision</span>
+    <!-- Hero Section -->
+    <section class="hero-banner text-white px-3 px-lg-5">
+        <div class="container py-4 position-relative" style="z-index: 2;">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col-lg-9 col-xl-8">
+                    <span class="badge bg-indigo bg-opacity-25 text-info border border-info border-opacity-25 rounded-pill px-3 py-2 mb-3 fw-medium">
+                        🚀 Next-Gen Digital Ecosystem 2026
+                    </span>
+                    <h1 class="display-4 fw-extrabold mb-3 tracking-tight lh-sm">
+                        Empower Your Digital Growth With <span class="gradient-text">Elite Solutions</span>
                     </h1>
-                    <p class="lead text-secondary mb-4">
-                        Streamline your workflow, collaborate in real-time, and accomplish your project goals faster with our clean and intuitive workspace.
+                    <p class="lead text-slate-300 text-white-50 mb-4 fs-6 mx-auto" style="max-width: 680px;">
+                        Discover enterprise-grade API integrations, AI workflows, and cloud infrastructure services designed to scale your modern digital business seamlessly.
                     </p>
-                    <div class="d-flex flex-column flex-sm-row gap-3">
-                        <a href="#demo" class="btn btn-primary-custom text-center">Try Interactive Demo</a>
-                        <a href="#features" class="btn btn-outline-custom text-center">Explore Features</a>
+
+                    <!-- Hero Search Bar Input -->
+                    <div class="bg-white p-2 rounded-pill shadow-lg d-flex align-items-center mb-4 max-w-lg mx-auto" style="max-width: 620px;">
+                        <span class="ps-3 text-muted fs-5"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" id="heroSearchInput" class="form-control border-0 shadow-none px-3 bg-transparent fs-6" placeholder="Search AI tools, APIs, cloud infrastructure...">
+                        <button class="btn btn-gradient rounded-pill px-4 py-2.5 fw-semibold" id="heroSearchBtn">
+                            Explore
+                        </button>
                     </div>
-                    
-                    <!-- Stats Badge -->
-                    <div class="row mt-5 pt-3 border-top g-3">
-                        <div class="col-4">
-                            <h3 class="fw-bold text-dark mb-0">99.9%</h3>
-                            <small class="text-muted">Uptime SLA</small>
-                        </div>
-                        <div class="col-4">
-                            <h3 class="fw-bold text-dark mb-0">15k+</h3>
-                            <small class="text-muted">Active Users</small>
-                        </div>
-                        <div class="col-4">
-                            <h3 class="fw-bold text-dark mb-0">4.9/5</h3>
-                            <small class="text-muted">User Rating</small>
-                        </div>
+
+                    <!-- Hero Quick Filter Chips -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
+                        <span class="small text-white-50 me-2">Popular:</span>
+                        <button class="filter-chip hero-pill" data-quick="AI & ML">AI & ML</button>
+                        <button class="filter-chip hero-pill" data-quick="Cloud Solutions">Cloud</button>
+                        <button class="filter-chip hero-pill" data-quick="API & DevOps">APIs</button>
+                        <button class="filter-chip hero-pill" data-quick="Cybersecurity">Security</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Services Grid Section -->
+    <section id="services" class="container py-5">
+        <!-- Controls Header -->
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+                <h2 class="fw-extrabold h3 mb-1 text-dark">Platform Services & Tools</h2>
+                <p class="text-muted small mb-0">Browse and deploy curated digital solutions tailored to your operational needs</p>
+            </div>
+
+            <!-- Sorting & Total Counter -->
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-muted small fw-medium" id="itemCountDisplay">Showing 0 services</span>
+                <select id="sortSelect" class="form-select rounded-pill border-slate-300 shadow-none text-muted fs-7 py-2 pe-4" style="width: 180px;">
+                    <option value="popular">Most Popular</option>
+                    <option value="rating">Highest Rated</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Filter Chips Container -->
+        <div class="d-flex flex-wrap gap-2 mb-4" id="categoryFilterContainer">
+            <button class="filter-chip active" data-category="all">All Services</button>
+            <button class="filter-chip" data-category="AI & ML">AI & Machine Learning</button>
+            <button class="filter-chip" data-category="Cloud Solutions">Cloud Infrastructure</button>
+            <button class="filter-chip" data-category="API & DevOps">DevOps & APIs</button>
+            <button class="filter-chip" data-category="Cybersecurity">Cybersecurity</button>
+            <button class="filter-chip" data-category="Analytics">Data Analytics</button>
+        </div>
+
+        <!-- Dynamic Grid Container -->
+        <div class="row g-4" id="servicesGrid">
+            <!-- JavaScript Cards Injected Dynamically -->
+        </div>
+
+        <!-- Empty Results State -->
+        <div id="noResultsState" class="text-center py-5 d-none">
+            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center p-4 mb-3">
+                <i class="fa-solid fa-magnifying-glass fa-2x text-muted"></i>
+            </div>
+            <h4 class="fw-bold text-dark">No matching services found</h4>
+            <p class="text-muted fs-7">Try adjusting your search terms or choosing a different category filter.</p>
+            <button class="btn btn-outline-dark rounded-pill px-4 mt-2" id="resetFiltersBtn">Reset Filters</button>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section id="solutions" class="bg-light py-5">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-6">
-                    <div class="hero-image-card p-3 p-md-4">
-                        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-                            <div class="d-flex gap-2">
-                                <span class="rounded-circle bg-danger opacity-75" style="width: 12px; height: 12px;"></span>
-                                <span class="rounded-circle bg-warning opacity-75" style="width: 12px; height: 12px;"></span>
-                                <span class="rounded-circle bg-success opacity-75" style="width: 12px; height: 12px;"></span>
+                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3 fw-semibold">Tailored Architecture</span>
+                    <h2 class="fw-extrabold text-dark display-6 mb-3">Enterprise Scalability Built For Rapid Growth</h2>
+                    <p class="text-muted mb-4">Our high-performance microservices architecture provides developer-first SDKs, automated deployment pipelines, and multi-region failovers out of the box.</p>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex gap-3">
+                            <div class="bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                                <i class="fa-solid fa-bolt text-warning fs-5"></i>
                             </div>
-                            <small class="text-muted fw-semibold">Nexus Dashboard Preview</small>
-                        </div>
-                        <!-- Mock Preview Graphics -->
-                        <div class="bg-light p-3 rounded mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-semibold">Weekly Productivity</span>
-                                <span class="badge bg-success-subtle text-success">+24% vs last week</span>
-                            </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 78%;" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <div class="p-3 border rounded text-center bg-white">
-                                    <i class="bi bi-check2-circle text-primary fs-3"></i>
-                                    <div class="fw-bold mt-1">128</div>
-                                    <small class="text-muted">Completed</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-3 border rounded text-center bg-white">
-                                    <i class="bi bi-clock-history text-warning fs-3"></i>
-                                    <div class="fw-bold mt-1">14</div>
-                                    <small class="text-muted">In Progress</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==========================================================================
-       Features Grid
-       ========================================================================== -->
-    <section id="features" class="py-5 my-5">
-        <div class="container py-4">
-            <div class="text-center max-w-2xl mx-auto mb-5">
-                <span class="text-primary fw-bold text-uppercase tracking-wide small">Core Features</span>
-                <h2 class="fw-bold display-6 mt-2">Everything you need to succeed</h2>
-                <p class="text-muted">Designed for teams and individuals looking to optimize their daily operational efficiency.</p>
-            </div>
-
-            <div class="row g-4">
-                <!-- Feature 1 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-lightning-charge"></i>
-                        </div>
-                        <h4 class="fw-bold h5">Lightning Fast</h4>
-                        <p class="text-muted mb-0">Optimized performance ensures your workspace loads instantly, keeping your focus uninterrupted.</p>
-                    </div>
-                </div>
-
-                <!-- Feature 2 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <h4 class="fw-bold h5">Secure by Design</h4>
-                        <p class="text-muted mb-0">End-to-end data encryption and enterprise-grade privacy protection for all your workflow assets.</p>
-                    </div>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-diagram-3"></i>
-                        </div>
-                        <h4 class="fw-bold h5">Smart Automation</h4>
-                        <p class="text-muted mb-0">Automate repetitive tasks with custom trigger rules and seamless external integrations.</p>
-                    </div>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-bar-chart-line"></i>
-                        </div>
-                        <h4 class="fw-bold h5">Real-time Analytics</h4>
-                        <p class="text-muted mb-0">Track performance metrics and generate detailed reports to visualize project progress easily.</p>
-                    </div>
-                </div>
-
-                <!-- Feature 5 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <h4 class="fw-bold h5">Team Collaboration</h4>
-                        <p class="text-muted mb-0">Share lists, assign tasks, and communicate effortlessly within centralized team boards.</p>
-                    </div>
-                </div>
-
-                <!-- Feature 6 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-phone"></i>
-                        </div>
-                        <h4 class="fw-bold h5">Cross-Platform Sync</h4>
-                        <p class="text-muted mb-0">Access your tasks seamless across web, tablet, and mobile devices anytime, anywhere.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==========================================================================
-       Interactive Task Manager Demo
-       ========================================================================== -->
-    <section id="demo" class="demo-section py-5">
-        <div class="container py-4">
-            <div class="row align-items-center gy-5">
-                <div class="col-lg-5">
-                    <span class="text-primary fw-bold text-uppercase small">Interactive Widget</span>
-                    <h2 class="fw-bold display-6 mt-2 mb-3">Try the live workspace right now</h2>
-                    <p class="text-muted mb-4">
-                        Experience our core task manager in real-time. Add items, mark tasks as completed, or filter through your active workload.
-                    </p>
-                    <div class="d-flex align-items-start gap-3 mb-3">
-                        <i class="bi bi-check-circle-fill text-primary fs-5 mt-1"></i>
-                        <div>
-                            <h6 class="fw-bold mb-1">Instant State Updates</h6>
-                            <p class="text-muted small mb-0">No page reloads needed—fast client-side dynamic management.</p>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-start gap-3">
-                        <i class="bi bi-check-circle-fill text-primary fs-5 mt-1"></i>
-                        <div>
-                            <h6 class="fw-bold mb-1">Progress Tracking</h6>
-                            <p class="text-muted small mb-0">Visual indicator bar calculates your completion rate on the fly.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-7">
-                    <div class="task-card p-4">
-                        <!-- App Header -->
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 gap-2">
                             <div>
-                                <h4 class="fw-bold mb-0">Task Manager</h4>
-                                <small class="text-muted" id="task-counter">0 tasks remaining</small>
-                            </div>
-                            <!-- Task Filter Buttons -->
-                            <div class="btn-group btn-group-sm" role="group" aria-label="Task Filters">
-                                <button type="button" class="btn btn-outline-secondary active" data-filter="all">All</button>
-                                <button type="button" class="btn btn-outline-secondary" data-filter="active">Active</button>
-                                <button type="button" class="btn btn-outline-secondary" data-filter="completed">Completed</button>
+                                <h6 class="fw-bold mb-1">Sub-Millisecond Execution</h6>
+                                <p class="text-muted small mb-0">Edge-optimized serverless routines for real-time applications.</p>
                             </div>
                         </div>
-
-                        <!-- Progress Bar -->
-                        <div class="progress mb-4" style="height: 6px;">
-                            <div id="task-progress" class="progress-bar bg-primary" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-
-                        <!-- Add Task Input Form -->
-                        <form id="task-form" class="mb-4">
-                            <div class="input-group">
-                                <input type="text" id="task-input" class="form-control" placeholder="Add a new task..." required>
-                                <button class="btn btn-primary-custom px-4" type="submit">
-                                    <i class="bi bi-plus-lg me-1"></i> Add
-                                </button>
+                        <div class="d-flex gap-3">
+                            <div class="bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                                <i class="fa-solid fa-lock text-success fs-5"></i>
                             </div>
-                        </form>
+                            <div>
+                                <h6 class="fw-bold mb-1">Zero-Trust Encrypted Storage</h6>
+                                <p class="text-muted small mb-0">SOC2 Type II compliant storage pipelines and end-to-end telemetry safety.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-4 bg-dark text-white rounded-4 shadow-lg border border-secondary border-opacity-25">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-danger rounded-pill px-3">Live Network Telemetry</span>
+                            <span class="small text-white-50"><i class="fa-solid fa-circle text-success me-1 fs-7"></i> Systems Operational</span>
+                        </div>
+                        <pre class="bg-black p-3 rounded-3 text-success fs-7 mb-0"><code>// Initialize Lux Platform Client
+import { LuxClient } from '@lux/sdk';
 
-                        <!-- Task Items Container -->
-                        <div class="task-list-container">
-                            <ul class="list-unstyled mb-0" id="task-list">
-                                <!-- Tasks render dynamically via JS -->
+const lux = new LuxClient({
+  apiKey: process.env.LUX_API_KEY,
+  region: 'us-east-1'
+});
+
+const deployment = await lux.deploy({
+  service: 'neural-vision-ai',
+  autoscale: true
+});
+
+console.log(`Deployed to: ${deployment.url}`);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="container py-5">
+        <div class="text-center max-w-lg mx-auto mb-5" style="max-width: 600px;">
+            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 mb-2 fw-semibold">Why Choose Lux</span>
+            <h2 class="fw-extrabold text-dark h3">Designed for Modern Engineering Teams</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="card-icon-wrapper bg-primary bg-opacity-10 text-primary">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h5 class="fw-bold">Developer First API</h5>
+                    <p class="text-muted small mb-0">Intuitive REST and GraphQL endpoints backed by extensive SDK support across JavaScript, Python, and Go.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="card-icon-wrapper bg-success bg-opacity-10 text-success">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h5 class="fw-bold">Real-time Analytics</h5>
+                    <p class="text-muted small mb-0">Monitor request volumes, error rates, and latencies through customizable interactive dashboards.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="card-icon-wrapper bg-purple bg-opacity-10 text-purple" style="color: #8b5cf6; background: rgba(139, 92, 246, 0.1);">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h5 class="fw-bold">Dynamic Auto-Scaling</h5>
+                    <p class="text-muted small mb-0">Seamlessly scale infrastructure from single requests up to enterprise volume surges without dropoffs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Service Modal -->
+    <div class="modal fade" id="serviceDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header bg-dark text-white p-4 border-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div id="modalIconContainer" class="card-icon-wrapper mb-0 bg-white text-dark"></div>
+                        <div>
+                            <span id="modalCategoryBadge" class="badge bg-primary text-white mb-1"></span>
+                            <h5 class="modal-title fw-bold text-white mb-0" id="modalTitle">Service Title</h5>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-7">
+                            <h6 class="fw-bold text-dark mb-2">Overview</h6>
+                            <p id="modalDescription" class="text-muted small mb-4"></p>
+                            
+                            <h6 class="fw-bold text-dark mb-2">Key Features & Capabilities</h6>
+                            <ul id="modalFeatureList" class="list-unstyled text-muted small d-flex flex-column gap-2">
+                                <!-- Dynamic Features -->
                             </ul>
                         </div>
+                        <div class="col-md-5 bg-light p-4 rounded-3 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="fw-bold text-dark mb-3">Deployment Tier</h6>
+                                <div class="d-flex align-items-baseline mb-2">
+                                    <span id="modalPrice" class="display-6 fw-extrabold text-primary me-1"></span>
+                                    <span class="text-muted small" id="modalBillingCycle">/ month</span>
+                                </div>
+                                <div class="text-warning small mb-3" id="modalRating"></div>
+                                <div class="p-3 bg-white rounded-3 border mb-3">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>SLA Guarantee:</span>
+                                        <strong class="text-dark">99.99%</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between small text-muted">
+                                        <span>Setup Time:</span>
+                                        <strong class="text-dark">Instant Deploy</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-gradient w-100 py-2.5 rounded-pill fw-semibold" id="deployServiceBtn">
+                                Deploy Service Now
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- ==========================================================================
-       Contact Form Section
-       ========================================================================== -->
-    <section id="contact" class="py-5">
-        <div class="container py-4">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="text-center mb-5">
-                        <span class="text-primary fw-bold text-uppercase small">Get In Touch</span>
-                        <h2 class="fw-bold display-6 mt-2">Have questions? Let's talk</h2>
-                        <p class="text-muted">Fill out the form below and our team will get back to you within 24 hours.</p>
+    <!-- Auth Modal (Sign In / Register) -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header bg-dark text-white p-4 pb-3 border-0">
+                    <div>
+                        <h5 class="modal-title fw-extrabold" id="authModalTitle">Access LuxPlatform</h5>
+                        <p class="text-white-50 small mb-0">Manage your enterprise services and API credentials</p>
                     </div>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-                    <form id="contact-form" class="needs-validation" novalidate>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="userName" class="form-label fw-semibold">Full Name</label>
-                                <input type="text" class="form-control p-3" id="userName" placeholder="John Doe" required>
-                                <div class="invalid-feedback">Please provide your name.</div>
+                <div class="modal-body p-4">
+                    <!-- Nav Tabs -->
+                    <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-pill" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active rounded-pill fw-semibold py-2 fs-7" id="login-tab" data-bs-toggle="pill" data-bs-target="#loginPane" type="button">Sign In</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill fw-semibold py-2 fs-7" id="signup-tab" data-bs-toggle="pill" data-bs-target="#signupPane" type="button">Create Account</button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-content">
+                        <!-- Sign In Tab -->
+                        <div class="tab-pane fade show active" id="loginPane" role="tabpanel">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Work Email</label>
+                                    <input type="email" class="form-control rounded-3 py-2 fs-7" id="loginEmail" placeholder="alex@company.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label class="form-label small fw-medium text-dark mb-0">Password</label>
+                                        <a href="#" class="small text-decoration-none text-primary">Forgot?</a>
+                                    </div>
+                                    <input type="password" class="form-control rounded-3 py-2 fs-7" id="loginPassword" placeholder="••••••••" required>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                                    <label class="form-check-label text-muted small" for="rememberMe">Remember login details</label>
+                                </div>
+                                <button type="submit" class="btn btn-gradient w-100 py-2.5 rounded-pill fw-semibold mb-3">
+                                    Sign In to Dashboard
+                                </button>
+                            </form>
+
+                            <div class="position-relative text-center my-3">
+                                <hr class="border-secondary opacity-25">
+                                <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 small text-muted">OR CONTINUE WITH</span>
                             </div>
-                            <div class="col-md-6">
-                                <label for="userEmail" class="form-label fw-semibold">Email Address</label>
-                                <input type="email" class="form-control p-3" id="userEmail" placeholder="name@example.com" required>
-                                <div class="invalid-feedback">Please enter a valid email address.</div>
-                            </div>
-                            <div class="col-12">
-                                <label for="subject" class="form-label fw-semibold">Subject</label>
-                                <input type="text" class="form-control p-3" id="subject" placeholder="How can we help?" required>
-                                <div class="invalid-feedback">Please enter a subject.</div>
-                            </div>
-                            <div class="col-12">
-                                <label for="message" class="form-label fw-semibold">Message</label>
-                                <textarea class="form-control p-3" id="message" rows="4" placeholder="Your message here..." required></textarea>
-                                <div class="invalid-feedback">Please provide your message.</div>
-                            </div>
-                            <div class="col-12 text-center mt-4">
-                                <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold">Send Message</button>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small" onclick="handleSocialAuth('Google')"><i class="fa-brands fa-google text-danger me-1"></i> Google</button>
+                                <button class="btn btn-social rounded-3 py-2 flex-grow-1 small" onclick="handleSocialAuth('GitHub')"><i class="fa-brands fa-github text-dark me-1"></i> GitHub</button>
                             </div>
                         </div>
-                    </form>
+
+                        <!-- Create Account Tab -->
+                        <div class="tab-pane fade" id="signupPane" role="tabpanel">
+                            <form id="signupForm">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Full Name</label>
+                                    <input type="text" class="form-control rounded-3 py-2 fs-7" id="signupName" placeholder="Alex Morgan" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Work Email</label>
+                                    <input type="email" class="form-control rounded-3 py-2 fs-7" id="signupEmail" placeholder="alex@company.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Password</label>
+                                    <input type="password" class="form-control rounded-3 py-2 fs-7" id="signupPassword" placeholder="Minimum 8 characters" minlength="8" required>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" id="acceptTerms" required>
+                                    <label class="form-check-label text-muted small" for="acceptTerms">I accept the Terms & Privacy Policy</label>
+                                </div>
+                                <button type="submit" class="btn btn-gradient w-100 py-2.5 rounded-pill fw-semibold">
+                                    Register Account
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- ==========================================================================
-       Footer Section
-       ========================================================================== -->
-    <footer class="pt-5 pb-4">
+    <!-- Footer -->
+    <footer id="pricing" class="bg-dark text-white pt-5 pb-4 mt-5">
         <div class="container">
             <div class="row g-4 mb-5">
+                <!-- Brand Info -->
                 <div class="col-lg-4 col-md-6">
-                    <a class="navbar-brand text-white d-flex align-items-center gap-2 mb-3" href="#">
-                        <i class="bi bi-hexagon-fill text-primary"></i>
-                        Nexus<span>App</span>
-                    </a>
-                    <p class="small text-secondary mb-4">
-                        Building modern, efficient, and reliable productivity software designed to streamline operations for teams worldwide.
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="bg-white text-dark rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <span class="fs-5 fw-extrabold text-white">LuxServices</span>
+                    </div>
+                    <p class="text-white-50 small mb-4" style="max-width: 320px;">
+                        Architecting high-performance API platforms, automated AI workflows, and enterprise cloud solutions for visionary teams worldwide.
                     </p>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="fs-5"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="fs-5"><i class="bi bi-github"></i></a>
-                        <a href="#" class="fs-5"><i class="bi bi-linkedin"></i></a>
+                    <div class="d-flex gap-3 fs-5">
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="text-white-50 hover-text-white"><i class="fa-brands fa-discord"></i></a>
                     </div>
                 </div>
 
+                <!-- Column 1: Services -->
                 <div class="col-lg-2 col-md-6">
-                    <h6 class="text-white fw-bold mb-3">Product</h6>
-                    <ul class="list-unstyled small d-flex flex-column gap-2">
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#demo">Live Demo</a></li>
-                        <li><a href="#">Integrations</a></li>
-                        <li><a href="#">Pricing</a></li>
+                    <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Services</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a href="#services" class="text-decoration-none text-white-50">AI & Neural Models</a></li>
+                        <li><a href="#services" class="text-decoration-none text-white-50">Cloud Compute</a></li>
+                        <li><a href="#services" class="text-decoration-none text-white-50">DevOps Pipelines</a></li>
+                        <li><a href="#services" class="text-decoration-none text-white-50">Zero-Trust Security</a></li>
                     </ul>
                 </div>
 
+                <!-- Column 2: Solutions -->
                 <div class="col-lg-2 col-md-6">
-                    <h6 class="text-white fw-bold mb-3">Company</h6>
-                    <ul class="list-unstyled small d-flex flex-column gap-2">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                    <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Solutions</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">Enterprise Scaling</a></li>
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">SaaS Architecture</a></li>
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">API Gateway</a></li>
+                        <li><a href="#solutions" class="text-decoration-none text-white-50">Data Intelligence</a></li>
                     </ul>
                 </div>
 
+                <!-- Column 3: Newsletter -->
                 <div class="col-lg-4 col-md-6">
-                    <h6 class="text-white fw-bold mb-3">Subscribe to Newsletter</h6>
-                    <p class="small text-secondary mb-3">Stay updated with our latest releases and tech insights.</p>
-                    <form id="newsletter-form" class="d-flex gap-2">
-                        <input type="email" class="form-control" placeholder="Enter your email" required>
-                        <button type="submit" class="btn btn-primary-custom px-3">Subscribe</button>
+                    <h6 class="fw-bold mb-3 text-uppercase fs-7 text-secondary">Stay Updated</h6>
+                    <p class="small text-white-50 mb-3">Subscribe to receive developer updates, platform news, and release notes.</p>
+                    <form id="newsletterForm" class="input-group">
+                        <input type="email" id="newsletterEmail" class="form-control rounded-start-pill bg-dark text-white border-secondary shadow-none fs-7" placeholder="developer@company.com" required>
+                        <button class="btn btn-gradient rounded-end-pill px-4 fs-7" type="submit">Subscribe</button>
                     </form>
                 </div>
             </div>
 
             <hr class="border-secondary opacity-25">
-
-            <div class="row align-items-center pt-3 small text-secondary">
-                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-                    &copy; <span id="year"></span> NexusApp, Inc. All rights reserved.
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start small text-white-50">
+                    &copy; 2026 LuxServices Inc. All rights reserved.
                 </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="me-3">Privacy</a>
-                    <a href="#" class="me-3">Terms</a>
-                    <a href="#">Cookies</a>
+                <div class="col-md-6 text-center text-md-end small text-white-50 mt-2 mt-md-0">
+                    <a href="#" class="text-decoration-none text-white-50 me-3">Privacy Policy</a>
+                    <a href="#" class="text-decoration-none text-white-50 me-3">Terms of Service</a>
+                    <a href="#" class="text-decoration-none text-white-50">Security</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- ==========================================================================
-       Login Modal
-       ========================================================================== -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem;">
-                <div class="modal-header border-0 pb-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4 p-md-5 pt-0">
-                    <div class="text-center mb-4">
-                        <div class="d-inline-flex align-items-center justify-content-center p-3 rounded-circle bg-primary-subtle text-primary mb-3">
-                            <i class="bi bi-person-circle fs-2"></i>
-                        </div>
-                        <h4 class="fw-bold mb-1" id="loginModalLabel">Welcome Back</h4>
-                        <p class="text-muted small mb-0">Enter your credentials to access your account</p>
-                    </div>
+    <!-- Dynamic Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
-                    <form id="login-form" class="needs-validation" novalidate>
-                        <div class="mb-3">
-                            <label for="loginEmail" class="form-label fw-semibold">Email address</label>
-                            <input type="email" class="form-control p-3" id="loginEmail" placeholder="name@example.com" required>
-                            <div class="invalid-feedback">Please enter a valid email.</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label for="loginPassword" class="form-label fw-semibold mb-0">Password</label>
-                                <a href="#" class="small text-primary text-decoration-none">Forgot password?</a>
-                            </div>
-                            <input type="password" class="form-control p-3" id="loginPassword" placeholder="••••••••" required>
-                            <div class="invalid-feedback">Please enter your password.</div>
-                        </div>
-
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" value="" id="rememberMe">
-                            <label class="form-check-label small text-secondary" for="rememberMe">
-                                Remember me on this device
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold">Sign In</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification Box -->
-    <div class="toast-container">
-        <div id="app-toast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toast-message">
-                    Notification message.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap 5 JavaScript Bundle -->
+    <!-- Bootstrap 5 JS Bundle CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom Application JavaScript -->
     <script type="text/javascript">
+        // Expanded Data Source
+        const servicesData = [
+            {
+                id: 1,
+                title: "Neural Vision AI Engine",
+                category: "AI & ML",
+                icon: "fa-brain",
+                bgColor: "#e0e7ff",
+                iconColor: "#4f46e5",
+                price: 199,
+                rating: 4.9,
+                reviews: 142,
+                badge: "Popular",
+                description: "High-throughput computer vision API for realtime object detection, image classification, and automated video analytical processing.",
+                features: ["Latency < 45ms", "Multi-model orchestration", "Automated edge deployment"]
+            },
+            {
+                id: 2,
+                title: "Serverless Edge Cloud",
+                category: "Cloud Solutions",
+                icon: "fa-cloud-bolt",
+                bgColor: "#dbeafe",
+                iconColor: "#2563eb",
+                price: 89,
+                rating: 4.8,
+                reviews: 98,
+                badge: "Hot",
+                description: "Ultra-low latency global serverless compute nodes optimized for dynamic microservices and instant traffic scaling.",
+                features: ["300+ Edge locations", "Automatic auto-scaling", "DDoS mitigation built-in"]
+            },
+            {
+                id: 3,
+                title: "API Gateway Enterprise",
+                category: "API & DevOps",
+                icon: "fa-network-wired",
+                bgColor: "#fce7f3",
+                iconColor: "#db2777",
+                price: 149,
+                rating: 4.7,
+                reviews: 76,
+                badge: "Essential",
+                description: "Unified API management platform with rate limiting, OAuth authentication, and interactive developer portal dashboards.",
+                features: ["GraphQL & REST support", "Realtime telemetry", "Zero-downtime routing"]
+            },
+            {
+                id: 4,
+                title: "Zero-Trust Guard Shield",
+                category: "Cybersecurity",
+                icon: "fa-shield-halved",
+                bgColor: "#dcfce7",
+                iconColor: "#16a34a",
+                price: 299,
+                rating: 5.0,
+                reviews: 210,
+                badge: "Top Rated",
+                description: "Comprehensive end-to-end security suite featuring automated vulnerability scanning, identity governance, and threat detection.",
+                features: ["SOC2 compliant", "Automated threat response", "Realtime identity access management"]
+            },
+            {
+                id: 5,
+                title: "Realtime Data Intelligence",
+                category: "Analytics",
+                icon: "fa-chart-pie",
+                bgColor: "#fef3c7",
+                iconColor: "#d97706",
+                price: 129,
+                rating: 4.6,
+                reviews: 84,
+                badge: "",
+                description: "Streaming telemetry pipeline capable of processing billions of events daily with built-in predictive SQL dashboards.",
+                features: ["Kafka connector integration", "Custom BI widgets", "Automated alert triggers"]
+            },
+            {
+                id: 6,
+                title: "LLM Orchestrator Pro",
+                category: "AI & ML",
+                icon: "fa-robot",
+                bgColor: "#fae8ff",
+                iconColor: "#c026d3",
+                price: 249,
+                rating: 4.9,
+                reviews: 189,
+                badge: "New 2026",
+                description: "Seamlessly route prompts, manage token caching, and orchestrate open-source and proprietary large language models.",
+                features: ["Prompt caching optimization", "Fallback model routing", "Enterprise compliance controls"]
+            },
+            {
+                id: 7,
+                title: "Kubernetes Ops Pipeline",
+                category: "API & DevOps",
+                icon: "fa-cubes",
+                bgColor: "#ccfbf1",
+                iconColor: "#0d9488",
+                price: 179,
+                rating: 4.8,
+                reviews: 115,
+                badge: "",
+                description: "Automated CI/CD GitOps workflow tool designed to build, test, and deploy microservices dynamically.",
+                features: ["GitOps automated triggers", "Canary deployment support", "Cluster health analytics"]
+            }
+        ];
+
+        // State Management
+        let activeCategory = 'all';
+        let searchQuery = '';
+        let currentSort = 'popular';
+        let currentUser = null;
+
+        // Initialize DOM Elements
         document.addEventListener('DOMContentLoaded', () => {
-            // Set dynamic copyright year
-            document.getElementById('year').textContent = new Date().getFullYear();
-
-            // Setup Toast instance
-            const toastEl = document.getElementById('app-toast');
-            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
-            const toastMessage = document.getElementById('toast-message');
-
-            function showNotification(message) {
-                toastMessage.textContent = message;
-                toast.show();
-            }
-
-            function escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
-
-            /* ==========================================================================
-               Interactive Task Manager Logic
-               ========================================================================== */
-            let tasks = [
-                { id: 1, text: 'Review initial design mockups', completed: true },
-                { id: 2, text: 'Set up Bootstrap 5 project skeleton', completed: true },
-                { id: 3, text: 'Implement task state management in JS', completed: false }
-            ];
-
-            let currentFilter = 'all';
-
-            const taskForm = document.getElementById('task-form');
-            const taskInput = document.getElementById('task-input');
-            const taskList = document.getElementById('task-list');
-            const taskCounter = document.getElementById('task-counter');
-            const taskProgress = document.getElementById('task-progress');
-            const filterButtons = document.querySelectorAll('[data-filter]');
-
-            function updateStats() {
-                const totalTasks = tasks.length;
-                const completedTasks = tasks.filter(t => t.completed).length;
-                const remainingTasks = totalTasks - completedTasks;
-
-                taskCounter.textContent = `${remainingTasks} task${remainingTasks === 1 ? '' : 's'} remaining`;
-                const progressPercentage = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
-                taskProgress.style.width = `${progressPercentage}%`;
-                taskProgress.setAttribute('aria-valuenow', progressPercentage);
-            }
-
-            // Render Task Items
-            function renderTasks() {
-                taskList.innerHTML = '';
-
-                const filteredTasks = tasks.filter(task => {
-                    if (currentFilter === 'active') return !task.completed;
-                    if (currentFilter === 'completed') return task.completed;
-                    return true;
-                });
-
-                if (filteredTasks.length === 0) {
-                    taskList.innerHTML = `<li class="text-center text-muted py-3 small">No tasks found.</li>`;
-                } else {
-                    filteredTasks.forEach(task => {
-                        const li = document.createElement('li');
-                        li.className = `task-item ${task.completed ? 'completed' : ''}`;
-                        li.innerHTML = `
-                            <div class="d-flex align-items-center gap-2">
-                                <input class="form-check-input mt-0" type="checkbox" ${task.completed ? 'checked' : ''} data-id="${task.id}">
-                                <span class="task-text text-break">${escapeHtml(task.text)}</span>
-                            </div>
-                            <button class="btn btn-link text-danger p-0 ms-2" data-delete="${task.id}" title="Delete task">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        `;
-                        taskList.appendChild(li);
-                    });
-                }
-
-                updateStats();
-            }
-
-            // Task Form Event Listener
-            taskForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const text = taskInput.value.trim();
-                if (text) {
-                    tasks.push({ id: Date.now(), text, completed: false });
-                    taskInput.value = '';
-                    renderTasks();
-                    showNotification('Task added successfully!');
-                }
-            });
-
-            // Task Actions Event Delegation
-            taskList.addEventListener('click', (e) => {
-                const target = e.target.closest('button, input');
-                if (!target) return;
-
-                if (target.dataset.delete) {
-                    const id = parseInt(target.dataset.delete);
-                    tasks = tasks.filter(t => t.id !== id);
-                    renderTasks();
-                    showNotification('Task deleted.');
-                } else if (target.type === 'checkbox') {
-                    const id = parseInt(target.dataset.id);
-                    const task = tasks.find(t => t.id === id);
-                    if (task) {
-                        task.completed = target.checked;
-                        renderTasks();
-                    }
-                }
-            });
-
-            // Task Filter Event Listeners
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentFilter = btn.dataset.filter;
-                    renderTasks();
-                });
-            });
-
-            // Initial render
-            renderTasks();
-
-            /* ==========================================================================
-               Login Modal Logic
-               ========================================================================== */
-            const loginForm = document.getElementById('login-form');
-            const loginModalElement = document.getElementById('loginModal');
-            const loginModal = new bootstrap.Modal(loginModalElement);
-
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                if (!loginForm.checkValidity()) {
-                    e.stopPropagation();
-                    loginForm.classList.add('was-validated');
-                    return;
-                }
-
-                const email = document.getElementById('loginEmail').value;
-                loginModal.hide();
-                loginForm.reset();
-                loginForm.classList.remove('was-validated');
-
-                showNotification(`Welcome back, ${email}!`);
-            });
+            renderServices();
+            setupEventListeners();
+            setupNavSmoothScroll();
         });
+
+        // Interactive Nav Scroll & Mobile Collapse
+        function setupNavSmoothScroll() {
+            const navLinks = document.querySelectorAll('.nav-link-custom');
+            const navbarCollapse = document.getElementById('navbarContent');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+
+                        if (navbarCollapse.classList.contains('show')) {
+                            const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                            if (bsCollapse) bsCollapse.hide();
+                        }
+                    }
+                });
+            });
+        }
+
+        // Render Cards Grid
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            const noResults = document.getElementById('noResultsState');
+            const itemCounter = document.getElementById('itemCountDisplay');
+
+            // Filter
+            let filtered = servicesData.filter(item => {
+                const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.category.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                if (currentSort === 'rating') return b.rating - a.rating;
+                if (currentSort === 'price-asc') return a.price - b.price;
+                if (currentSort === 'price-desc') return b.price - a.price;
+                return b.reviews - a.reviews; // Default 'popular'
+            });
+
+            // Update Counter Text
+            itemCounter.textContent = `Showing ${filtered.length} service${filtered.length === 1 ? '' : 's'}`;
+
+            // Render Output
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('d-none');
+                return;
+            }
+
+            noResults.classList.add('d-none');
+            grid.innerHTML = filtered.map(item => `
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="service-card p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="card-icon-wrapper" style="background-color: ${item.bgColor}; color: ${item.iconColor};">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            ${item.badge ? `<span class="badge bg-indigo text-primary bg-primary-subtle rounded-pill px-3 py-1 fw-semibold fs-8">${item.badge}</span>` : ''}
+                        </div>
+                        <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">${item.category}</span>
+                        <h5 class="fw-bold text-dark mt-1 mb-2">${item.title}</h5>
+                        <p class="text-muted small mb-3 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                            ${item.description}
+                        </p>
+                        
+                        <div class="d-flex align-items-center gap-1 mb-3 text-warning small">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="fw-bold text-dark me-1">${item.rating}</span>
+                            <span class="text-muted">(${item.reviews} reviews)</span>
+                        </div>
+
+                        <div class="pt-3 border-top d-flex align-items-center justify-content-between mt-auto">
+                            <div>
+                                <span class="fs-4 fw-extrabold text-dark">$${item.price}</span>
+                                <span class="text-muted small">/mo</span>
+                            </div>
+                            <button class="btn btn-outline-dark rounded-pill px-3 py-1.5 fs-7 fw-semibold" onclick="openServiceModal(${item.id})">
+                                Inspect
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Attach Event Listeners
+        function setupEventListeners() {
+            // Category Filter Pills
+            document.getElementById('categoryFilterContainer').addEventListener('click', (e) => {
+                const button = e.target.closest('.filter-chip');
+                if (!button) return;
+
+                document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeCategory = button.getAttribute('data-category');
+                renderServices();
+            });
+
+            // Quick Hero Filters
+            document.querySelectorAll('[data-quick]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const cat = btn.getAttribute('data-quick');
+                    activeCategory = cat;
+                    
+                    document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(chip => {
+                        chip.classList.toggle('active', chip.getAttribute('data-category') === cat);
+                    });
+
+                    document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+                    renderServices();
+                });
+            });
+
+            // Search Inputs Sync
+            const heroInput = document.getElementById('heroSearchInput');
+            const navInput = document.getElementById('navSearchInput');
+
+            const handleSearch = (val) => {
+                searchQuery = val;
+                heroInput.value = val;
+                navInput.value = val;
+                renderServices();
+            };
+
+            heroInput.addEventListener('input', (e) => handleSearch(e.target.value));
+            navInput.addEventListener('input', (e) => handleSearch(e.target.value));
+            document.getElementById('heroSearchBtn').addEventListener('click', () => {
+                document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Sorting Select
+            document.getElementById('sortSelect').addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                renderServices();
+            });
+
+            // Reset Filter Button
+            document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+                searchQuery = '';
+                activeCategory = 'all';
+                heroInput.value = '';
+                navInput.value = '';
+                document.querySelectorAll('#categoryFilterContainer .filter-chip').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-category') === 'all');
+                });
+                renderServices();
+            });
+
+            // Forms Submit Handlers
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                loginUser(email.split('@')[0]);
+            });
+
+            document.getElementById('signupForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value;
+                loginUser(name);
+            });
+
+            document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showToast('Success!', 'Thank you for subscribing to developer updates.');
+                document.getElementById('newsletterEmail').value = '';
+            });
+
+            document.getElementById('deployServiceBtn').addEventListener('click', () => {
+                const modalEl = document.getElementById('serviceDetailModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) modalInstance.hide();
+                showToast('Deployment Initialized', 'Service container environment provisioning has started.');
+            });
+        }
+
+        // Open Service Modal Dynamic Populator
+        function openServiceModal(id) {
+            const item = servicesData.find(s => s.id === id);
+            if (!item) return;
+
+            document.getElementById('modalCategoryBadge').textContent = item.category;
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalPrice').textContent = `$${item.price}`;
+            
+            const iconBox = document.getElementById('modalIconContainer');
+            iconBox.style.backgroundColor = item.bgColor;
+            iconBox.style.color = item.iconColor;
+            iconBox.innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
+
+            document.getElementById('modalRating').innerHTML = `
+                <i class="fa-solid fa-star"></i> <strong>${item.rating}</strong> (${item.reviews} total reviews)
+            `;
+
+            const list = document.getElementById('modalFeatureList');
+            list.innerHTML = item.features.map(f => `
+                <li class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-success fs-6"></i> ${f}
+                </li>
+            `).join('');
+
+            const modal = new bootstrap.Modal(document.getElementById('serviceDetailModal'));
+            modal.show();
+        }
+
+        // Handle User Login Simulation
+        function loginUser(username) {
+            currentUser = username;
+            document.getElementById('authBtnText').textContent = currentUser;
+            document.getElementById('authBtnIcon').className = 'fa-solid fa-user-check text-success';
+            
+            const modalEl = document.getElementById('authModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+
+            showToast('Welcome back!', `Signed in as ${username}`);
+        }
+
+        function handleSocialAuth(provider) {
+            loginUser(`${provider} User`);
+        }
+
+        // Custom Dynamic Toast Notification Utility
+        function showToast(title, message) {
+            const container = document.getElementById('toastContainer');
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast show border-0 shadow-lg rounded-3 mb-2';
+            toastEl.setAttribute('role', 'alert');
+            toastEl.innerHTML = `
+                <div class="toast-header bg-dark text-white rounded-top-3">
+                    <i class="fa-solid fa-bell me-2 text-warning"></i>
+                    <strong class="me-auto">${title}</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body bg-white text-dark rounded-bottom-3 fs-7">
+                    ${message}
+                </div>
+            `;
+            container.appendChild(toastEl);
+            setTimeout(() => {
+                toastEl.remove();
+            }, 4000);
+        }
     </script>
 </body>
 </html>
